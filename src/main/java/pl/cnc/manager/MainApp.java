@@ -2,13 +2,18 @@ package pl.cnc.manager;
 
 import pl.cnc.manager.model.Drill;
 import pl.cnc.manager.model.Tool;
+import pl.cnc.manager.service.FileService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainApp {
-    public static void main(String[] args) {
+    static void main() {
 
-        System.out.println("Hello World");
-        Tool tool = new Drill("D", "Wiertlo fi 3", 3);
+        List<Tool> magazine = new ArrayList<>();
+        Tool tool = new Drill("D", "Drill 3", 3);
+        magazine.add(tool);
+        System.out.println(tool.toString());
+
     }
-
-
 }
