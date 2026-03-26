@@ -16,9 +16,15 @@ public class MainApp {
         magazine.add(tool);
         System.out.println(tool.toString());
         magazine.add(tool);
+        System.out.println(tool.getDiameter());
+        System.out.println(tool.getQuantity());
+        tool.setQuantity(2);
         System.out.println();
         FileService fileService = new FileService();
         fileService.saveToFile(magazine);
+        for (Tool tool1 : magazine) {
+            System.out.println(tool1);
+        }
 
     }
 }

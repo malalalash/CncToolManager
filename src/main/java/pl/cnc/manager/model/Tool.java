@@ -4,7 +4,7 @@ public abstract class Tool {
     private final String id;
     private final String name;
     private int quantity;
-    private double diameter;
+    private final double diameter;
 
     public Tool(String id, String name, double diameter) {
         this.id = id;
