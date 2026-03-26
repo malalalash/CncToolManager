@@ -9,7 +9,7 @@ public class Drill extends Tool {
 
     @Override
     public String toCsv() {
-        return String.format(Locale.ENGLISH, "DRILL,%s,%s,%.2f,%s", getId(), getName(), getDiameter(), getQuantity());
+        return String.format(Locale.ENGLISH, "DRILL,%s,%s,%.2f,%d", getId(), getName(), getDiameter(), getQuantity());
     }
 
     @Override
