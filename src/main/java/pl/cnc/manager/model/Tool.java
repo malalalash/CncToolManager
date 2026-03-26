@@ -1,6 +1,6 @@
 package pl.cnc.manager.model;
 
-public class Tool {
+public abstract class Tool {
     private String id;
     private String name;
     private double diameter;
@@ -10,4 +10,8 @@ public class Tool {
         this.name = name;
         this.diameter = diameter;
     }
+
+    public String getId() {return id;};
+    public String getName() {return name;};
+    public double getDiameter() {return diameter;};
 }
