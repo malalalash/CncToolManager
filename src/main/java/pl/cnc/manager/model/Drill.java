@@ -1,5 +1,7 @@
 package pl.cnc.manager.model;
 
+import java.util.Locale;
+
 public class Drill extends Tool {
     public Drill(String id, String name, double diameter) {
         super(id, name, diameter);
@@ -7,11 +9,11 @@ public class Drill extends Tool {
 
     @Override
     public String toCsv() {
-        return "DRILL," + getId() + "," + getName() + "," + getDiameter();
+        return String.format(Locale.ENGLISH, "DRILL,%s,%s,%.2f,%s", getId(), getName(), getDiameter(), getQuantity());
     }
 
     @Override
     public String toString() {
-        return "### DRILL ###\n" + "id: " + getId() + "\nname: " + getName() + "\nDiameter: " + getDiameter();
+        return String.format(Locale.ENGLISH, "### DRILL ###\nid: %s\nname: %s\ndiameter: %.2f\nquantity: %s", getId(), getName(), getDiameter(), getQuantity());
     }
 }
