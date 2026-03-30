@@ -10,8 +10,16 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MainApp {
+    public static void startupMessage() {
+        System.out.println("Welcome to CNC Tool Manager");
+        System.out.println("Available options:");
+        System.out.println("'1' to create a new tool");
+        System.out.println("'2' to delete tool");
+        System.out.println("'3' to view all tools");
+        System.out.println("'0' to exit");
+    }
     static void main() {
-
+        startupMessage();
         List<Tool> magazine = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
@@ -35,6 +43,9 @@ public class MainApp {
                 default:
                     System.out.println("Brak");
             }
-        } scanner.close();
+        }
+        scanner.close();
     }
 }
+
+
