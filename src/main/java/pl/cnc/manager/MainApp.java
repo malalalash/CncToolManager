@@ -7,24 +7,34 @@ import pl.cnc.manager.service.FileService;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class MainApp {
     static void main() {
 
         List<Tool> magazine = new ArrayList<>();
-        Tool tool = new Drill("D", "Drill 3", 3.0);
-        magazine.add(tool);
-        System.out.println(tool.toString());
-        magazine.add(tool);
-        System.out.println(tool.getDiameter());
-        System.out.println(tool.getQuantity());
-        tool.setQuantity(2);
-        System.out.println();
-        FileService fileService = new FileService();
-        fileService.saveToFile(magazine);
-        for (Tool tool1 : magazine) {
-            System.out.println(tool1);
-        }
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+        while (running) {
+            String input = scanner.next();
 
+            switch (input) {
+                case "1":
+                    System.out.println("1");
+                    break;
+                case "2":
+                    System.out.println("2");
+                    break;
+                case "3":
+                    System.out.println("3");
+                    break;
+                case "0": {
+                    running = false;
+                    break;
+                }
+                default:
+                    System.out.println("Brak");
+            }
+        } scanner.close();
     }
 }
