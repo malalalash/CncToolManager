@@ -8,13 +8,15 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class FileService {
+
+    private static final String FILE_NAME = "inventory.csv";
+
     public void saveToFile(List<Tool> tools) {
         if (tools == null || tools.isEmpty()) {
             System.out.println("No tools found");
             return;
         }
-        String FILE_NAME = "inventory.csv";
-        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME, true))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(FILE_NAME, false))) {
             for (Tool tool : tools) {
                 writer.println(tool.toCsv());
             }

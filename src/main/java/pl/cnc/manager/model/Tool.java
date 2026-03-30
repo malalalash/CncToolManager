@@ -6,10 +6,13 @@ public abstract class Tool {
     private int quantity;
     private final double diameter;
 
-    public Tool(String id, String name, double diameter) {
+    public Tool(String id, String name, double diameter, int quantity) {
         this.id = id;
         this.name = name;
-        this.quantity = 1;
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
+        this.quantity = quantity;
         if (diameter <= 0) {
             throw new IllegalArgumentException("Diameter must be greater than 0.");
         }
