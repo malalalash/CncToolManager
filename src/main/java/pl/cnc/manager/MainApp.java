@@ -10,15 +10,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MainApp {
-    public static void startupMessage() {
-        System.out.println("\nAvailable options:");
-        System.out.println("'1' to add new tool");
-        System.out.println("'2' to delete tool");
-        System.out.println("'3' to view all tools in magazine");
-        System.out.println("'0' to exit\n");
-    }
     public static void main(String[] args) {
         System.out.println("Welcome to CNC Tool Manager");
+        FileService fs = new FileService();
+        fs.loadFromFile();
         List<Tool> magazine = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
@@ -93,6 +88,14 @@ public class MainApp {
             }
         }
         scanner.close();
+    }
+
+    public static void startupMessage() {
+        System.out.println("\nAvailable options:");
+        System.out.println("'1' to add new tool");
+        System.out.println("'2' to delete tool");
+        System.out.println("'3' to view all tools in magazine");
+        System.out.println("'0' to exit\n");
     }
 }
 
