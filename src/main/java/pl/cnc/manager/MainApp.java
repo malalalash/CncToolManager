@@ -5,8 +5,6 @@ import pl.cnc.manager.model.EndMill;
 import pl.cnc.manager.model.Tool;
 import pl.cnc.manager.model.ToolType;
 import pl.cnc.manager.service.FileService;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,7 +27,7 @@ public class MainApp {
                     removeTool(magazine, scanner);
                     break;
                 case "3":
-                    listTools(magazine, scanner);
+                    listTools(magazine);
                     break;
                 case "0": {
                     fs.saveToFile(magazine);
@@ -111,7 +109,7 @@ public class MainApp {
         }
     }
 
-    private static void listTools(List<Tool> magazine, Scanner scanner) {
+    private static void listTools(List<Tool> magazine) {
         if (magazine.isEmpty()) {
             System.out.println("\nMagazine is empty.\n");
         } else {

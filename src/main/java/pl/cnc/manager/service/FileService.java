@@ -52,9 +52,7 @@ public class FileService {
                     int quantity = Integer.parseInt(data[data.length - 1]);
 
                     Tool tool = switch (type) {
-                        case DRILL -> {
-                            yield new Drill(id, name, diameter, quantity);
-                        }
+                        case DRILL -> new Drill(id, name, diameter, quantity);
                         case END_MILL -> {
                             if (data.length < 6) {
                                 System.err.println("Wrong END_MILL line: " + line);
