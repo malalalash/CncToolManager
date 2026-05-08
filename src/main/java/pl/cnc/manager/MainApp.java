@@ -1,6 +1,7 @@
 package pl.cnc.manager;
 
 import pl.cnc.manager.model.Drill;
+import pl.cnc.manager.model.EndMill;
 import pl.cnc.manager.model.Tool;
 import pl.cnc.manager.model.ToolType;
 import pl.cnc.manager.service.FileService;
@@ -78,12 +79,16 @@ public class MainApp {
 
             Tool newTool = switch (selectedType) {
                 case DRILL -> new Drill(id, name, diameter, quantity);
-                case END_MILL -> null;
+                case END_MILL -> {
+                    System.out.println("Provide number of flutes:");
+                    int flutes = Integer.parseInt(scanner.nextLine().trim());
+                    yield new EndMill(id, name, diameter, flutes, quantity);
+                }
                 case FACE_MILL -> null;
                 case THREAD_MILL -> null;
             };
             magazine.add(newTool);
-            System.out.println("Tool added: " + newTool + "\n");
+            System.out.println("Tool added: \n" + newTool + "\n");
 
         } catch (NumberFormatException e) {
             System.out.println("Invalid number entered. Tool not added.");

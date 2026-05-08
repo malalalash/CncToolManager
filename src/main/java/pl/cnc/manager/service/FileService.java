@@ -1,6 +1,7 @@
 package pl.cnc.manager.service;
 
 import pl.cnc.manager.model.Drill;
+import pl.cnc.manager.model.EndMill;
 import pl.cnc.manager.model.Tool;
 import pl.cnc.manager.model.ToolType;
 
@@ -44,19 +45,32 @@ public class FileService {
                 if (data.length < 5) continue;
 
                 try {
-                    String type = data[0].toUpperCase().trim();
+                    ToolType type = ToolType.valueOf(data[0].trim().toUpperCase());
                     String id = data[1];
                     String name = data[2];
                     double diameter = Double.parseDouble(data[3]);
-                    int quantity = Integer.parseInt(data[4]);
 
                     Tool tool = switch (type) {
-                        case "DRILL" -> new Drill(id, name, diameter, quantity);
-                        case "END_MILL" -> null;
-                        case "FACE_MILL" -> null;
-                        case "THREAD_MILL" -> null;
-                        default -> { System.err.println("Unknown type: " + type); yield null;}
+                        case DRILL -> {
+                            int quantity = Integer.parseInt(data[4]);
+                            yield new Drill(id, name, diameter, quantity);
+                        }
+                        case END_MILL -> {
+                            if (data.length < 6) {
+                                System.err.println("Malformed END_MILL line: " + line);
+                                yield null;
+                            }
+                            int flutes = Integer.parseInt(data[4]);
+                            int quantity = Integer.parseInt(data[5]);
+                            yield new EndMill(id, name, diameter, flutes, quantity);
+                        }
+                        default -> {
+                            System.err.println("Unsupported type: " + type);
+                            yield null;
+                        }
                     };
+
+                    if (tool != null) magazine.add(tool);
                 } catch (IllegalArgumentException e) {
                     System.err.println("Unknown tool type: " + data[0]);
                 }
