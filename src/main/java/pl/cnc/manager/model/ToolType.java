@@ -4,5 +4,5 @@ public enum ToolType {
     DRILL,
     END_MILL,
     FACE_MILL,
-    THREAD_MILL,
+    TAP,
 }

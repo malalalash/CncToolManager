@@ -26,6 +26,6 @@ public class EndMill extends Tool {
     @Override
     public String toString() {
         return String.format(Locale.ENGLISH, "### END_MILL ###\nid: %s\nname: %s\ndiameter: %.2f\nflutes: %d\nquantity: %d",
-                getId(), getName(), getDiameter(), flutes, getQuantity());
+                getId(), getName(), getDiameter(), getFlutes(), getQuantity());
     }
 }

@@ -77,7 +77,11 @@ public class MainApp {
                     int inserts = Integer.parseInt(scanner.nextLine().trim());
                     yield new FaceMill(id, name, diameter, inserts, quantity);
                 }
-                case THREAD_MILL -> null;
+                case TAP -> {
+                    System.out.println("Provide pitch of a TAP:");
+                    double pitch = Double.parseDouble(scanner.nextLine().trim());
+                    yield new Tap(id, name, diameter, pitch, quantity);
+                }
             };
             if (newTool != null) {
                 magazine.add(newTool);

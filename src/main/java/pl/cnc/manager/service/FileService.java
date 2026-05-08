@@ -66,6 +66,14 @@ public class FileService {
                             int inserts = Integer.parseInt(data[4]);
                             yield new FaceMill(id, name, diameter, inserts, quantity);
                         }
+                        case TAP -> {
+                            if (data.length < 6) {
+                                System.err.println("Wrong TAP line: " + line);
+                                yield null;
+                            }
+                            double pitch = Double.parseDouble(data[4]);
+                            yield new Tap(id, name, diameter, pitch, quantity);
+                        }
                         default -> {
                             System.err.println("Unsupported type: " + type);
                             yield null;
