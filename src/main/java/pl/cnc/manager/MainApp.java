@@ -22,38 +22,7 @@ public class MainApp {
 
             switch (input) {
                 case "1":
-                    System.out.println("Select tool type:");
-                    ToolType[] types = ToolType.values();
-                    for (int i = 0; i < types.length; i++) {
-                        System.out.println((i + 1) + " - " + types[i]);
-                    }
-
-                    try {
-                        int typeIndex = Integer.parseInt(scanner.nextLine().trim()) - 1;
-
-                        if (typeIndex < 0 || typeIndex >= types.length) {
-                            System.out.println("Invalid tool type selection.");
-                            break;
-                        }
-
-                        ToolType selectedType = types[typeIndex];
-
-                        System.out.println("Provide id:");
-                        String id = scanner.nextLine().trim();
-                        System.out.println("Provide name:");
-                        String name = scanner.nextLine().trim();
-                        System.out.println("Provide diameter:");
-                        double diameter = Double.parseDouble(scanner.nextLine().trim());
-                        System.out.println("Provide quantity:");
-                        int quantity = Integer.parseInt(scanner.nextLine().trim());
-
-                        Tool newTool = new Drill(id, name, diameter, quantity);
-                        magazine.add(newTool);
-                        System.out.println("Tool added: " + newTool + "\n");
-
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid number entered. Tool not added.");
-                    }
+addTool(magazine, scanner);
                     break;
                 case "2":
                     if (magazine.isEmpty()) {
@@ -90,12 +59,51 @@ public class MainApp {
         scanner.close();
     }
 
-    public static void startupMessage() {
+    private static void startupMessage() {
         System.out.println("\nAvailable options:");
         System.out.println("'1' to add new tool");
         System.out.println("'2' to delete tool");
         System.out.println("'3' to view all tools in magazine");
         System.out.println("'0' to exit\n");
+    }
+    private static void addTool(List<Tool> magazine, Scanner scanner) {
+        System.out.println("Select tool type:");
+        ToolType[] types = ToolType.values();
+        for (int i = 0; i < types.length; i++) {
+            System.out.println((i + 1) + " - " + types[i]);
+        }
+
+        try {
+            int typeIndex = Integer.parseInt(scanner.nextLine().trim()) - 1;
+
+            if (typeIndex < 0 || typeIndex >= types.length) {
+                System.out.println("Invalid tool type selection.");
+                return;
+            }
+
+            ToolType selectedType = types[typeIndex];
+
+            System.out.println("Provide id:");
+            String id = scanner.nextLine().trim();
+            System.out.println("Provide name:");
+            String name = scanner.nextLine().trim();
+            System.out.println("Provide diameter:");
+            double diameter = Double.parseDouble(scanner.nextLine().trim());
+            System.out.println("Provide quantity:");
+            int quantity = Integer.parseInt(scanner.nextLine().trim());
+
+            Tool newTool = switch (selectedType) {
+                case DRILL -> new Drill(id, name, diameter, quantity);
+                case END_MILL -> null;
+                case FACE_MILL -> null;
+                case THREAD_MILL -> null;
+            };
+            magazine.add(newTool);
+            System.out.println("Tool added: " + newTool + "\n");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number entered. Tool not added.");
+        }
     }
 }
 
