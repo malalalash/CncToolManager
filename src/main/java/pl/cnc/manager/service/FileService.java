@@ -1,9 +1,6 @@
 package pl.cnc.manager.service;
 
-import pl.cnc.manager.model.Drill;
-import pl.cnc.manager.model.EndMill;
-import pl.cnc.manager.model.Tool;
-import pl.cnc.manager.model.ToolType;
+import pl.cnc.manager.model.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -60,6 +57,14 @@ public class FileService {
                             }
                             int flutes = Integer.parseInt(data[4]);
                             yield new EndMill(id, name, diameter, flutes, quantity);
+                        }
+                        case FACE_MILL -> {
+                            if (data.length < 6) {
+                                System.err.println("Wrong FACE_MILL line: " + line);
+                                yield null;
+                            }
+                            int inserts = Integer.parseInt(data[4]);
+                            yield new FaceMill(id, name, diameter, inserts, quantity);
                         }
                         default -> {
                             System.err.println("Unsupported type: " + type);

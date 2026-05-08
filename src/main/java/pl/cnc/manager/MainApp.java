@@ -1,9 +1,6 @@
 package pl.cnc.manager;
 
-import pl.cnc.manager.model.Drill;
-import pl.cnc.manager.model.EndMill;
-import pl.cnc.manager.model.Tool;
-import pl.cnc.manager.model.ToolType;
+import pl.cnc.manager.model.*;
 import pl.cnc.manager.service.FileService;
 
 import java.util.List;
@@ -75,7 +72,11 @@ public class MainApp {
                     int flutes = Integer.parseInt(scanner.nextLine().trim());
                     yield new EndMill(id, name, diameter, flutes, quantity);
                 }
-                case FACE_MILL -> null;
+                case FACE_MILL -> {
+                    System.out.println("Provide number of inserts:");
+                    int inserts = Integer.parseInt(scanner.nextLine().trim());
+                    yield new FaceMill(id, name, diameter, inserts, quantity);
+                }
                 case THREAD_MILL -> null;
             };
             if (newTool != null) {
