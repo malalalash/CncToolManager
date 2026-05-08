@@ -3,8 +3,8 @@ package pl.cnc.manager.model;
 import java.util.Locale;
 
 public class Drill extends Tool {
-    public Drill(String id, String name, double diameter, int quantity) {
-        super(id, name, diameter, quantity);
+    public Drill(Enum<ToolType> type, String id, String name, double diameter, int quantity) {
+        super(type, id, name, diameter, quantity);
     }
 
     @Override

@@ -3,7 +3,7 @@ package pl.cnc.manager.service;
 import pl.cnc.manager.model.Tool;
 
 import java.io.*;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,7 +27,7 @@ public class FileService {
         }
     }
 
-    public void loadFromFile() {
+    public List<Tool> loadFromFile() {
         File file = new File(FILE_NAME);
         try (Scanner input = new Scanner(file)) {
             while (input.hasNextLine()) {
@@ -46,7 +46,11 @@ public class FileService {
                 double diameter = Double.parseDouble(data[2]);
                 int quantity = Integer.parseInt(data[3]);
 
-                //System.out.printf("ID: ,%s NAME: ,%s DIAMETER: ,%.2f QUANTITY: ,%d ", id, name, diameter, quantity);
+                System.out.printf("ID: %s, NAME: %s, DIAMETER: %.2f, QUANTITY: %d", id, name, diameter, quantity);
+
+                List<Tool> magaizne = new ArrayList<>();
+
+                return magaizne;
             }
         } catch (Exception e) {
             System.err.println("ERROR: " + e.getMessage());
