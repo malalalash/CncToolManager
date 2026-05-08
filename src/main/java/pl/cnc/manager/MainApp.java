@@ -84,8 +84,6 @@ public class MainApp {
             } else {
                 System.out.println("Could not add tool.");
             }
-            System.out.println("Tool added: \n" + newTool + "\n");
-
         } catch (NumberFormatException e) {
             System.out.println("Invalid number entered. Tool not added.");
         }
