@@ -5,6 +5,7 @@ import pl.cnc.manager.model.EndMill;
 import pl.cnc.manager.model.Tool;
 import pl.cnc.manager.model.ToolType;
 import pl.cnc.manager.service.FileService;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,22 +21,14 @@ public class MainApp {
             String input = scanner.nextLine().trim();
 
             switch (input) {
-                case "1":
-                    addTool(magazine, scanner);
-                    break;
-                case "2":
-                    removeTool(magazine, scanner);
-                    break;
-                case "3":
-                    listTools(magazine);
-                    break;
-                case "0": {
+                case "1" -> addTool(magazine, scanner);
+                case "2" -> removeTool(magazine, scanner);
+                case "3" -> listTools(magazine);
+                case "0" -> {
                     fs.saveToFile(magazine);
                     running = false;
-                    break;
                 }
-                default:
-                    System.out.println("non");
+                default -> System.out.println("Uknown option, try again");
             }
         }
         scanner.close();
@@ -85,7 +78,7 @@ public class MainApp {
                 case FACE_MILL -> null;
                 case THREAD_MILL -> null;
             };
-            if (newTool != null ) {
+            if (newTool != null) {
                 magazine.add(newTool);
                 System.out.println("Tool added: \n" + newTool + "\n");
             } else {
