@@ -22,21 +22,10 @@ public class MainApp {
 
             switch (input) {
                 case "1":
-addTool(magazine, scanner);
+                    addTool(magazine, scanner);
                     break;
                 case "2":
-                    if (magazine.isEmpty()) {
-                        System.out.println("Magazine is empty, nothing to remove.");
-                        break;
-                    }
-                    System.out.println("Provide tool id to remove:");
-                    String id = scanner.nextLine().trim();
-                    boolean removed = magazine.removeIf(tool -> tool.getId().equals(id));
-                    if (removed) {
-                        System.out.println("Tool with id: " + id + " has been removed.");
-                    } else {
-                        System.out.println("No tool found with id: " + id);
-                    }
+                    removeTool(magazine, scanner);
                     break;
                 case "3":
                     listTools(magazine, scanner);
@@ -60,6 +49,7 @@ addTool(magazine, scanner);
         System.out.println("'3' to view all tools in magazine");
         System.out.println("'0' to exit\n");
     }
+
     private static void addTool(List<Tool> magazine, Scanner scanner) {
         System.out.println("Select tool type:");
         ToolType[] types = ToolType.values();
@@ -99,6 +89,23 @@ addTool(magazine, scanner);
             System.out.println("Invalid number entered. Tool not added.");
         }
     }
+
+    private static void removeTool(List<Tool> magazine, Scanner scanner) {
+        if (magazine.isEmpty()) {
+            System.out.println("Magazine is empty, nothing to remove.");
+            return;
+        }
+
+        System.out.println("Provide tool id to remove:");
+        String id = scanner.nextLine().trim();
+        boolean removed = magazine.removeIf(tool -> tool.getId().equals(id));
+        if (removed) {
+            System.out.println("Tool with id: " + id + " has been removed.");
+        } else {
+            System.out.println("No tool found with id: " + id);
+        }
+    }
+
     private static void listTools(List<Tool> magazine, Scanner scanner) {
         if (magazine.isEmpty()) {
             System.out.println("\nMagazine is empty.\n");

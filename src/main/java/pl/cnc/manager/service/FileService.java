@@ -44,7 +44,6 @@ public class FileService {
                 if (data.length < 5) continue;
 
                 try {
-
                     ToolType type = ToolType.valueOf(data[0]);
                     String id = data[1];
                     String name = data[2];
