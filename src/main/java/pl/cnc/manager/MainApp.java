@@ -85,7 +85,12 @@ public class MainApp {
                 case FACE_MILL -> null;
                 case THREAD_MILL -> null;
             };
-            magazine.add(newTool);
+            if (newTool != null ) {
+                magazine.add(newTool);
+                System.out.println("Tool added: \n" + newTool + "\n");
+            } else {
+                System.out.println("Could not add tool.");
+            }
             System.out.println("Tool added: \n" + newTool + "\n");
 
         } catch (NumberFormatException e) {
