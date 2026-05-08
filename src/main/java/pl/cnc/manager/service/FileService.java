@@ -1,6 +1,8 @@
 package pl.cnc.manager.service;
 
+import pl.cnc.manager.model.Drill;
 import pl.cnc.manager.model.Tool;
+import pl.cnc.manager.model.ToolType;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -28,32 +30,39 @@ public class FileService {
     }
 
     public List<Tool> loadFromFile() {
+        List<Tool> magazine = new ArrayList<>();
         File file = new File(FILE_NAME);
+
+        if (!file.exists()) return magazine;
+
         try (Scanner input = new Scanner(file)) {
             while (input.hasNextLine()) {
                 String line = input.nextLine();
-                if (line.isBlank()) {
-                    continue;
-                }
+                if (line.isBlank()) continue;
 
                 String[] data = line.split(",");
-                System.out.println(data[0]);
-                if (data.length < 4) {
-                    continue;
+                if (data.length < 5) continue;
+
+                try {
+
+                    ToolType type = ToolType.valueOf(data[0]);
+                    String id = data[1];
+                    String name = data[2];
+                    double diameter = Double.parseDouble(data[3]);
+                    int quantity = Integer.parseInt(data[4]);
+
+                    if (type == ToolType.DRILL) {
+                        magazine.add(new Drill(id, name, diameter, quantity));
+                    } else {
+                        System.out.println("Cannot resolve type: " + type);
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Unknown tool type: " + data[0]);
                 }
-                String id = data[0];
-                String name = data[1];
-                double diameter = Double.parseDouble(data[2]);
-                int quantity = Integer.parseInt(data[3]);
-
-                System.out.printf("ID: %s, NAME: %s, DIAMETER: %.2f, QUANTITY: %d", id, name, diameter, quantity);
-
-                List<Tool> magaizne = new ArrayList<>();
-
-                return magaizne;
             }
         } catch (Exception e) {
-            System.err.println("ERROR: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
         }
+        return magazine;
     }
 }

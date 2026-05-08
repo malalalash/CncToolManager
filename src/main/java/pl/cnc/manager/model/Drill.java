@@ -3,13 +3,13 @@ package pl.cnc.manager.model;
 import java.util.Locale;
 
 public class Drill extends Tool {
-    public Drill(Enum<ToolType> type, String id, String name, double diameter, int quantity) {
-        super(type, id, name, diameter, quantity);
+    public Drill(String id, String name, double diameter, int quantity) {
+        super(ToolType.DRILL, id, name, diameter, quantity);
     }
 
     @Override
     public String toCsv() {
-        return String.format(Locale.ENGLISH, "DRILL,%s,%s,%.2f,%d", getId(), getName(), getDiameter(), getQuantity());
+        return String.format(Locale.ENGLISH, "%s,%s,%s,%.2f,%d",getType(), getId(), getName(), getDiameter(), getQuantity());
     }
 
     @Override

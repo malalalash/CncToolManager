@@ -1,14 +1,14 @@
 package pl.cnc.manager.model;
 
 public abstract class Tool {
-    private final Enum<ToolType> type;
+    private final ToolType type;
     private final String id;
     private final String name;
     private int quantity;
     private final double diameter;
 
     public Tool(Enum<ToolType> type, String id, String name, double diameter, int quantity) {
-        this.type = type;
+        this.type = (ToolType) type;
         this.id = id;
         this.name = name;
         if (quantity < 0) {
@@ -22,6 +22,8 @@ public abstract class Tool {
     }
 
     public abstract String toCsv();
+
+    public ToolType getType() { return type; }
 
     public String getId() {
         return id;
