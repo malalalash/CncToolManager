@@ -13,7 +13,7 @@ public class MainApp {
     public static void main(String[] args) {
         System.out.println("Welcome to CNC Tool Manager");
         FileService fs = new FileService();
-        List<Tool> magazine =  fs.loadFromFile();
+        List<Tool> magazine = fs.loadFromFile();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         while (running) {

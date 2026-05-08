@@ -1,5 +1,7 @@
 package pl.cnc.manager.model;
 
+import java.util.Locale;
+
 public abstract class Tool {
     private final ToolType type;
     private final String id;
@@ -7,8 +9,8 @@ public abstract class Tool {
     private int quantity;
     private final double diameter;
 
-    public Tool(Enum<ToolType> type, String id, String name, double diameter, int quantity) {
-        this.type = (ToolType) type;
+    public Tool(ToolType type, String id, String name, double diameter, int quantity) {
+        this.type = type;
         this.id = id;
         this.name = name;
         if (quantity < 0) {
@@ -20,8 +22,6 @@ public abstract class Tool {
         }
         this.diameter = diameter;
     }
-
-    public abstract String toCsv();
 
     public ToolType getType() { return type; }
 
@@ -47,5 +47,15 @@ public abstract class Tool {
         }
         this.quantity = quantity;
     }
-    public abstract String toString();
+
+    @Override
+    public String toString() {
+        return String.format(Locale.ENGLISH, "### %s ###\nid: %s\nname: %s\ndiameter: %.2f\nquantity: %d",
+                type, id, name, diameter, quantity);
+    }
+
+    public String toCsv() {
+        return String.format(Locale.ENGLISH, "%s,%s,%s,%.2f,%d",
+                type, id, name, diameter, quantity);
+    }
 }
