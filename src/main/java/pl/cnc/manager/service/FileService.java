@@ -44,17 +44,19 @@ public class FileService {
                 if (data.length < 5) continue;
 
                 try {
-                    ToolType type = ToolType.valueOf(data[0]);
+                    String type = data[0].toUpperCase().trim();
                     String id = data[1];
                     String name = data[2];
                     double diameter = Double.parseDouble(data[3]);
                     int quantity = Integer.parseInt(data[4]);
 
-                    if (type == ToolType.DRILL) {
-                        magazine.add(new Drill(id, name, diameter, quantity));
-                    } else {
-                        System.out.println("Cannot resolve type: " + type);
-                    }
+                    Tool tool = switch (type) {
+                        case "DRILL" -> new Drill(id, name, diameter, quantity);
+                        case "END_MILL" -> null;
+                        case "FACE_MILL" -> null;
+                        case "THREAD_MILL" -> null;
+                        default -> { System.err.println("Unknown type: " + type); yield null;}
+                    };
                 } catch (IllegalArgumentException e) {
                     System.err.println("Unknown tool type: " + data[0]);
                 }
