@@ -39,13 +39,7 @@ addTool(magazine, scanner);
                     }
                     break;
                 case "3":
-                    if (magazine.isEmpty()) {
-                        System.out.println("\nMagazine is empty.\n");
-                    } else {
-                        for (Tool tool : magazine) {
-                            System.out.println(tool + "\n");
-                        }
-                    }
+                    listTools(magazine, scanner);
                     break;
                 case "0": {
                     fs.saveToFile(magazine);
@@ -103,6 +97,15 @@ addTool(magazine, scanner);
 
         } catch (NumberFormatException e) {
             System.out.println("Invalid number entered. Tool not added.");
+        }
+    }
+    private static void listTools(List<Tool> magazine, Scanner scanner) {
+        if (magazine.isEmpty()) {
+            System.out.println("\nMagazine is empty.\n");
+        } else {
+            for (Tool tool : magazine) {
+                System.out.println(tool + "\n");
+            }
         }
     }
 }
