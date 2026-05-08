@@ -49,19 +49,18 @@ public class FileService {
                     String id = data[1];
                     String name = data[2];
                     double diameter = Double.parseDouble(data[3]);
+                    int quantity = Integer.parseInt(data[data.length - 1]);
 
                     Tool tool = switch (type) {
                         case DRILL -> {
-                            int quantity = Integer.parseInt(data[4]);
                             yield new Drill(id, name, diameter, quantity);
                         }
                         case END_MILL -> {
                             if (data.length < 6) {
-                                System.err.println("Malformed END_MILL line: " + line);
+                                System.err.println("Wrong END_MILL line: " + line);
                                 yield null;
                             }
                             int flutes = Integer.parseInt(data[4]);
-                            int quantity = Integer.parseInt(data[5]);
                             yield new EndMill(id, name, diameter, flutes, quantity);
                         }
                         default -> {
@@ -69,7 +68,6 @@ public class FileService {
                             yield null;
                         }
                     };
-
                     if (tool != null) magazine.add(tool);
                 } catch (IllegalArgumentException e) {
                     System.err.println("Unknown tool type: " + data[0]);
