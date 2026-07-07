@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ToolMagazine {
-    public static void addTool(List<Tool> magazine, Scanner scanner) {
+    public void addTool(List<Tool> magazine, Scanner scanner) {
         System.out.println("Select tool type:");
         ToolType[] types = ToolType.values();
         for (int i = 0; i < types.length; i++) {
@@ -61,7 +61,7 @@ public class ToolMagazine {
         }
     }
 
-    public static void removeTool(List<Tool> magazine, Scanner scanner) {
+    public void removeTool(List<Tool> magazine, Scanner scanner) {
         if (magazine.isEmpty()) {
             System.out.println("Magazine is empty, nothing to remove.");
             return;
@@ -77,7 +77,7 @@ public class ToolMagazine {
         }
     }
 
-    public static void listTools(List<Tool> magazine) {
+    public void listTools(List<Tool> magazine) {
         if (magazine.isEmpty()) {
             System.out.println("\nMagazine is empty.\n");
         } else {
