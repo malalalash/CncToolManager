@@ -23,7 +23,7 @@ public class Tap extends Tool {
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, "### TAP ###\nid: %s\nname: %s\ndiameter: %.2f\nflutes: %.2f\nquantity: %d",
+        return String.format(Locale.ENGLISH, "### TAP ###\nid: %s\nname: %s\ndiameter: %.2f\npitch: %.2f\nquantity: %d",
                 getId(), getName(), getDiameter(), getPitch(), getQuantity());
     }
 }

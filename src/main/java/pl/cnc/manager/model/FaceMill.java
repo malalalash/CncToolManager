@@ -25,7 +25,7 @@ public class FaceMill extends Tool {
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, "### FACE_MILL ###\nid: %s\nname: %s\ndiameter: %.2f\nflutes: %d\nquantity: %d",
+        return String.format(Locale.ENGLISH, "### FACE_MILL ###\nid: %s\nname: %s\ndiameter: %.2f\ninserts: %d\nquantity: %d",
                 getId(), getName(), getDiameter(), inserts, getQuantity());
     }
 
