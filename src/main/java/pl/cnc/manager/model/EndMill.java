@@ -13,9 +13,7 @@ public class EndMill extends Tool {
         this.flutes = flutes;
     }
 
-    public int getFlutes() {
-        return flutes;
-    }
+    public int getFlutes() { return flutes; }
 
     @Override
     public String toCsv() {
