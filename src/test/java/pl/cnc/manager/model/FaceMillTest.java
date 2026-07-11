@@ -47,4 +47,13 @@ class FaceMillTest {
                 () -> new FaceMill("FM1", "FaceMill 40mm", 40, 6, quantity)
         );
     }
+
+    @Test
+    void shouldSetQuantity() {
+        FaceMill faceMill = new FaceMill("FM1", "FaceMill 40mm", 40, 6, 2);
+
+        faceMill.setQuantity(100);
+
+        assertEquals(100, faceMill.getQuantity());
+    }
 }
