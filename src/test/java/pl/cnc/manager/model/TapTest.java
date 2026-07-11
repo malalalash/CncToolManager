@@ -32,8 +32,8 @@ class TapTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, -5, -2})
-    void shouldThrowExceptionForInvalidPitch(int pitch) {
+    @ValueSource(doubles = {0.0, -5.0, -2.25})
+    void shouldThrowExceptionForInvalidPitch(double pitch) {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
                 () -> new Tap("T-01", "M10", 10.0, pitch, 3)
