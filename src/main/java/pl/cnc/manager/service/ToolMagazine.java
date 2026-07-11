@@ -25,10 +25,19 @@ public class ToolMagazine {
 
             System.out.println("Provide id:");
             String id = scanner.nextLine().trim();
+
+            boolean idExists = magazine.stream().anyMatch(tool -> tool.getId().equalsIgnoreCase(id));
+            if (idExists) {
+                System.out.println("Error: Tool with ID '" + id +"' already exists!");
+                return;
+            }
+
             System.out.println("Provide name:");
             String name = scanner.nextLine().trim();
+
             System.out.println("Provide diameter:");
             double diameter = Double.parseDouble(scanner.nextLine().trim());
+
             System.out.println("Provide quantity:");
             int quantity = Integer.parseInt(scanner.nextLine().trim());
 
