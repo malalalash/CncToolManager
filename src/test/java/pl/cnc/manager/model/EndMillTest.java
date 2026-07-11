@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class EndMillTest {
     @Test
     void shouldCreateEndMillCorrectly() {
-        EndMill mill = new EndMill("EM-1","End Mill 4", 4, 3,1);
+        EndMill mill = new EndMill("EM-1", "End Mill 4", 4, 3, 1);
 
         assertAll(
                 () -> assertEquals(ToolType.END_MILL, mill.getType()),
@@ -38,6 +38,7 @@ class EndMillTest {
                 () -> new EndMill("E1", "End Mill", 10.0, diameter, 5)
         );
     }
+
     @ParameterizedTest
     @ValueSource(ints = {-1, -5, -100})
     void shouldThrowExceptionForInvalidQuantity(int quantity) {
@@ -46,6 +47,7 @@ class EndMillTest {
                 () -> new EndMill("E001", "End Mill", 10.0, 4, quantity)
         );
     }
+
     @Test
     void shouldSetQuantity() {
         EndMill mill = new EndMill("E001", "End Mill", 10.0, 4, 5);
@@ -66,6 +68,7 @@ class EndMillTest {
 
         assertEquals("Quantity cannot be negative", exception.getMessage());
     }
+
     @Test
     void shouldReturnCorrectCsv() {
         EndMill mill = new EndMill("E001", "Carbide End Mill", 12.0, 4, 10);
@@ -74,6 +77,7 @@ class EndMillTest {
 
         assertEquals(expected, mill.toCsv());
     }
+
     @Test
     void shouldReturnCorrectToString() {
         EndMill mill = new EndMill("E001", "Carbide End Mill", 12.0, 4, 10);
