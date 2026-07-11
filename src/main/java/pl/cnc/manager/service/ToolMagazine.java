@@ -59,12 +59,9 @@ public class ToolMagazine {
                     yield new Tap(id, name, diameter, pitch, quantity);
                 }
             };
-            if (newTool != null) {
-                magazine.add(newTool);
-                System.out.println("Tool added: \n" + newTool + "\n");
-            } else {
-                System.out.println("Could not add tool.");
-            }
+
+            magazine.add(newTool);
+            System.out.println("Tool added: \n" + newTool + "\n");
         } catch (NumberFormatException e) {
             System.out.println("Invalid number entered. Tool not added.");
         }
