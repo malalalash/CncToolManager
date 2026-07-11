@@ -87,9 +87,11 @@ public class ToolMagazine {
         if (magazine.isEmpty()) {
             System.out.println("\nMagazine is empty.\n");
         } else {
+            System.out.println("--- INVENTORY ---");
             for (Tool tool : magazine) {
                 System.out.println(tool + "\n");
             }
+            System.out.println("------------------\n");
         }
     }
 }
