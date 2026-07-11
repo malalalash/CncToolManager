@@ -8,7 +8,7 @@ public class Tap extends Tool {
     public Tap(String id, String name, double diameter, double pitch, int quantity) {
         super(ToolType.TAP, id, name, diameter, quantity);
         if (pitch <= 0) {
-            throw new IllegalArgumentException("pitch must be greater than 0.");
+            throw new IllegalArgumentException("Pitch must be greater than 0");
         }
         this.pitch = pitch;
     }

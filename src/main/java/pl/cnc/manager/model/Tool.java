@@ -23,7 +23,9 @@ public abstract class Tool {
         this.diameter = diameter;
     }
 
-    public ToolType getType() { return type; }
+    public ToolType getType() {
+        return type;
+    }
 
     public String getId() {
         return id;
