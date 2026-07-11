@@ -56,4 +56,40 @@ class FaceMillTest {
 
         assertEquals(100, faceMill.getQuantity());
     }
+
+    @Test
+    void shouldThrowExceptionWhenSettingNegativeQuantity() {
+        FaceMill faceMill = new FaceMill("FM1", "FaceMill 40mm", 40, 6, 2);
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> faceMill.setQuantity(-1)
+        );
+
+        assertEquals("Quantity cannot be negative", exception.getMessage());
+    }
+
+    @Test
+    void shouldReturnCorrectCsv() {
+        FaceMill faceMill = new FaceMill("FM1", "FaceMill 40mm", 40, 6, 2);
+
+        String expected = "FACE_MILL,FM1,FaceMill 40mm,40.00,6,2";
+
+        assertEquals(expected, faceMill.toCsv());
+    }
+
+    @Test
+    void shouldReturnCorrectToString() {
+        FaceMill faceMill = new FaceMill("FM1", "FaceMill 40mm", 40, 6, 2);
+
+        String expected = """
+                ### FACE_MILL ###
+                id: FM1
+                name: FaceMill 40mm
+                diameter: 40.00
+                inserts: 6
+                quantity: 2""";
+
+        assertEquals(expected, faceMill.toString());
+    }
 }
