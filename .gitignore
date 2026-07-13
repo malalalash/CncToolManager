@@ -40,3 +40,4 @@ build/
 
 ### .csv ###
 inventory.csv
+.env

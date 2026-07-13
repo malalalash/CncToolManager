@@ -1,15 +1,30 @@
 package pl.cnc.manager;
 
 import pl.cnc.manager.model.*;
+import pl.cnc.manager.service.DatabaseService;
 import pl.cnc.manager.service.FileService;
 import pl.cnc.manager.service.ToolMagazine;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class MainApp {
     public static void main(String[] args) {
         System.out.println("Welcome to CNC Tool Manager");
+        DatabaseService db = new DatabaseService();
+
+        try (Connection connection = db.connect()) {
+            if (connection != null && !connection.isClosed()) {
+                System.out.println("Database connected successfully!");
+            }
+        } catch (SQLException e) {
+            System.err.println("Coulndn't connect to database");
+            e.printStackTrace();
+        }
+
+
         FileService fs = new FileService();
         List<Tool> magazine = fs.loadFromFile();
         ToolMagazine tm = new ToolMagazine();
