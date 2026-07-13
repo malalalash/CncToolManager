@@ -20,7 +20,7 @@ public class MainApp {
                 System.out.println("Database connected successfully!");
             }
         } catch (SQLException e) {
-            System.err.println("Coulndn't connect to database");
+            System.err.println("Couldn't connect to database");
             e.printStackTrace();
         }
 
@@ -42,7 +42,7 @@ public class MainApp {
                     fs.saveToFile(magazine);
                     running = false;
                 }
-                default -> System.out.println("Uknown option, try again");
+                default -> System.out.println("Unknown option, try again");
             }
         }
         scanner.close();
