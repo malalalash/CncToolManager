@@ -63,11 +63,59 @@ public class JdbcToolRepository implements ToolRepository {
 
     @Override
     public void save(Tool tool) {
+        String sql = "INSERT INTO tools (id, name, diameter, quantity, type, flutes, inserts, pitch) " +
+                "VALUES (?, ?, ?, ? ,? ,? ,?, ?)";
+
+        try (Connection conn = dbService.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+        ) {
+
+            pstmt.setString(1, tool.getId());
+            pstmt.setString(2, tool.getName());
+            pstmt.setDouble(3, tool.getDiameter());
+            pstmt.setInt(4, tool.getQuantity());
+
+            // Pattern matching to set subclass-specific properties (assuming standard getters exist)
+            if (tool instanceof Drill) {
+                pstmt.setString(5, ToolType.DRILL.name());
+                pstmt.setNull(6, Types.INTEGER);
+                pstmt.setNull(7, Types.INTEGER);
+                pstmt.setNull(8, Types.DOUBLE);
+            } else if (tool instanceof EndMill endMill) {
+                pstmt.setString(5, ToolType.END_MILL.name());
+                pstmt.setInt(6, endMill.getFlutes());
+                pstmt.setNull(7, Types.INTEGER);
+                pstmt.setNull(8, Types.DOUBLE);
+            } else if (tool instanceof FaceMill faceMill) {
+                pstmt.setString(5, ToolType.FACE_MILL.name());
+                pstmt.setNull(6, Types.INTEGER);
+                pstmt.setInt(7, faceMill.getInserts());
+                pstmt.setNull(8, Types.DOUBLE);
+            } else if (tool instanceof Tap tap) {
+                pstmt.setString(5, ToolType.TAP.name());
+                pstmt.setNull(6, Types.INTEGER);
+                pstmt.setNull(7, Types.INTEGER);
+                pstmt.setDouble(8, tap.getPitch());
+            }
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Cannot save tool: " + e.getMessage());
+        }
 
     }
 
     @Override
     public boolean deleteById(String id) {
-        return false;
+        String sql = "DELETE FROM tools WHERE id = ?";
+        try (Connection conn = dbService.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, id);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Cannot delete tool: " + e.getMessage());
+            return false;
+        }
     }
 }

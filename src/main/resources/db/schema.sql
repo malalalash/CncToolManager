@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS public.tool_types
     type character varying(20) COLLATE pg_catalog."default" NOT NULL,
     description text COLLATE pg_catalog."default",
     CONSTRAINT type_pkey PRIMARY KEY (type)
-)
+);
 
 CREATE TABLE IF NOT EXISTS public.tools
 (
@@ -21,4 +21,4 @@ CREATE TABLE IF NOT EXISTS public.tools
     ON UPDATE NO ACTION
     ON DELETE NO ACTION,
     CONSTRAINT tools_quantity_check CHECK (quantity >= 0)
-)
+);
