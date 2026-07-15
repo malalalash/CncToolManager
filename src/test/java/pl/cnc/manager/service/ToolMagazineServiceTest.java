@@ -143,7 +143,7 @@ class ToolMagazineServiceTest {
             List<Tool> actualTools = service.getAllTools();
 
             assertEquals(1, actualTools.size());
-            assertEquals(sampleTool, actualTools.get(0));
+            assertEquals(sampleTool, actualTools.getFirst());
             verify(repository, times(1)).findAll();
         }
 
