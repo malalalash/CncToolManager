@@ -1,5 +1,7 @@
 package pl.cnc.manager;
 
+import pl.cnc.manager.repository.JdbcToolRepository;
+import pl.cnc.manager.repository.ToolRepository;
 import pl.cnc.manager.service.DatabaseConnectionService;
 import pl.cnc.manager.service.ToolMagazineService;
 
@@ -10,16 +12,20 @@ import java.util.Scanner;
 public class MainApp {
     public static void main(String[] args) {
         System.out.println("Welcome to CNC Tool Manager");
-        DatabaseConnectionService db = new DatabaseConnectionService();
+        DatabaseConnectionService dbService = new DatabaseConnectionService();
 
-        try (Connection connection = db.connect()) {
-            if (connection != null && !connection.isClosed()) {
-                System.out.println("Database connected successfully!");
+        try (Connection conn = dbService.connect()) {
+            if(conn != null && !conn.isClosed()) {
+                System.out.println("Connected to database!");
             }
         } catch (SQLException e) {
-            System.err.println("Couldn't connect to database");
-            e.printStackTrace();
+            System.err.println("Cannot connect to database: " + e.getMessage());
+            return;
         }
+
+        ToolRepository repository = new JdbcToolRepository(dbService);
+        ToolMagazineService toolService = new ToolMagazineService(repository);
+
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         while (running) {
@@ -27,10 +33,11 @@ public class MainApp {
             String input = scanner.nextLine().trim();
 
             switch (input) {
-                case "1" -> System.out.println("1");
-                case "2" -> System.out.println("2");
-                case "3" -> System.out.println("3");
+                case "1" -> toolService.addTool(scanner);
+                case "2" -> toolService.removeTool(scanner);
+                case "3" -> toolService.listTools();
                 case "0" -> {
+                    System.out.println("GOODBYE!");
                     running = false;
                 }
                 default -> System.out.println("Unknown option, try again");
