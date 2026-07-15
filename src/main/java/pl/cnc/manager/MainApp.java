@@ -1,12 +1,10 @@
 package pl.cnc.manager;
 
-import pl.cnc.manager.model.*;
 import pl.cnc.manager.service.DatabaseService;
-import pl.cnc.manager.service.ToolMagazine;
+import pl.cnc.manager.service.ToolMagazineService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Scanner;
 
 public class MainApp {
@@ -25,7 +23,7 @@ public class MainApp {
 
 
 
-        ToolMagazine tm = new ToolMagazine();
+        ToolMagazineService tm = new ToolMagazineService();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         while (running) {

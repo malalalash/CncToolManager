@@ -5,7 +5,7 @@ import pl.cnc.manager.model.*;
 import java.util.List;
 import java.util.Scanner;
 
-public class ToolMagazine {
+public class ToolMagazineService {
     public void addTool(List<Tool> magazine, Scanner scanner) {
         System.out.println("Select tool type:");
         ToolType[] types = ToolType.values();
