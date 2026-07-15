@@ -35,7 +35,7 @@ public class ToolMagazineService {
             String id = scanner.nextLine().trim();
 
             if (id.isEmpty()) {
-                System.out.println("Error: Tool with ID '" + id +"' already exists!");
+                System.out.println("Tool ID cannot be empty!");
                 return;
             }
 
