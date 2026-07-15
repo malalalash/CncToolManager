@@ -4,7 +4,6 @@ import pl.cnc.manager.model.*;
 import pl.cnc.manager.repository.ToolRepository;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class ToolMagazineService {
 
