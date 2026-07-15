@@ -75,7 +75,6 @@ public class JdbcToolRepository implements ToolRepository {
             pstmt.setDouble(3, tool.getDiameter());
             pstmt.setInt(4, tool.getQuantity());
 
-            // Pattern matching to set subclass-specific properties (assuming standard getters exist)
             if (tool instanceof Drill) {
                 pstmt.setString(5, ToolType.DRILL.name());
                 pstmt.setNull(6, Types.INTEGER);
