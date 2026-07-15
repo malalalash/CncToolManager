@@ -70,15 +70,6 @@ class EndMillTest {
     }
 
     @Test
-    void shouldReturnCorrectCsv() {
-        EndMill mill = new EndMill("E001", "Carbide End Mill", 12.0, 4, 10);
-
-        String expected = "END_MILL,E001,Carbide End Mill,12.00,4,10";
-
-        assertEquals(expected, mill.toCsv());
-    }
-
-    @Test
     void shouldReturnCorrectToString() {
         EndMill mill = new EndMill("E001", "Carbide End Mill", 12.0, 4, 10);
 

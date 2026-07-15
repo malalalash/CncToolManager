@@ -16,8 +16,8 @@
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>6.1.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>

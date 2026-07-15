@@ -18,12 +18,6 @@ public class FaceMill extends Tool {
     }
 
     @Override
-    public String toCsv() {
-        return String.format(Locale.ENGLISH, "%s,%s,%s,%.2f,%d,%d",
-                getType(), getId(), getName(), getDiameter(), getInserts(), getQuantity());
-    }
-
-    @Override
     public String toString() {
         return String.format(Locale.ENGLISH, "### FACE_MILL ###\nid: %s\nname: %s\ndiameter: %.2f\ninserts: %d\nquantity: %d",
                 getId(), getName(), getDiameter(), inserts, getQuantity());

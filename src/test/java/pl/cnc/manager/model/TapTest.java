@@ -63,15 +63,6 @@ class TapTest {
     }
 
     @Test
-    void shouldReturnCorrectCsv() {
-        Tap tap = new Tap("T-02", "M6", 6.0, 1.0, 5);
-
-        String expected = "TAP,T-02,M6,6.00,1.00,5";
-
-        assertEquals(expected, tap.toCsv());
-    }
-
-    @Test
     void shouldReturnCorrectToString() {
         Tap tap = new Tap("T-01", "M10", 10.0, 1.5, 2);
 

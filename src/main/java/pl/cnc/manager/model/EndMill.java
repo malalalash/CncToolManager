@@ -16,12 +16,6 @@ public class EndMill extends Tool {
     public int getFlutes() { return flutes; }
 
     @Override
-    public String toCsv() {
-        return String.format(Locale.ENGLISH, "%s,%s,%s,%.2f,%d,%d",
-                getType(), getId(), getName(), getDiameter(), getFlutes(), getQuantity());
-    }
-
-    @Override
     public String toString() {
         return String.format(Locale.ENGLISH, "### END_MILL ###\nid: %s\nname: %s\ndiameter: %.2f\nflutes: %d\nquantity: %d",
                 getId(), getName(), getDiameter(), getFlutes(), getQuantity());

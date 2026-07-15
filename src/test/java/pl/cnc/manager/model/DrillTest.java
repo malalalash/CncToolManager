@@ -68,15 +68,6 @@ class DrillTest {
     }
 
     @Test
-    void shouldReturnCorrectCsv() {
-        Drill drill = new Drill("d1", "HSS Drill", 5.0, 5);
-
-        String expected = "DRILL,d1,HSS Drill,5.00,5";
-
-        assertEquals(expected, drill.toCsv());
-    }
-
-    @Test
     void shouldReturnCorrectToString() {
         Drill drill = new Drill("D001", "HSS Drill", 10.5, 5);
 

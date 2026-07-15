@@ -55,9 +55,4 @@ public abstract class Tool {
         return String.format(Locale.ENGLISH, "### %s ###\nid: %s\nname: %s\ndiameter: %.2f\nquantity: %d",
                 type, id, name, diameter, quantity);
     }
-
-    public String toCsv() {
-        return String.format(Locale.ENGLISH, "%s,%s,%s,%.2f,%d",
-                type, id, name, diameter, quantity);
-    }
 }

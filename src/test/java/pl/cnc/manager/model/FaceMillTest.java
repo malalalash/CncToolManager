@@ -70,15 +70,6 @@ class FaceMillTest {
     }
 
     @Test
-    void shouldReturnCorrectCsv() {
-        FaceMill faceMill = new FaceMill("FM1", "FaceMill 40mm", 40, 6, 2);
-
-        String expected = "FACE_MILL,FM1,FaceMill 40mm,40.00,6,2";
-
-        assertEquals(expected, faceMill.toCsv());
-    }
-
-    @Test
     void shouldReturnCorrectToString() {
         FaceMill faceMill = new FaceMill("FM1", "FaceMill 40mm", 40, 6, 2);
 

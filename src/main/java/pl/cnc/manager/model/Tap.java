@@ -16,12 +16,6 @@ public class Tap extends Tool {
     public double getPitch() { return pitch; }
 
     @Override
-    public String toCsv() {
-        return String.format(Locale.ENGLISH, "%s,%s,%s,%.2f,%.2f,%d",
-                getType(), getId(), getName(), getDiameter(), getPitch(), getQuantity());
-    }
-
-    @Override
     public String toString() {
         return String.format(Locale.ENGLISH, "### TAP ###\nid: %s\nname: %s\ndiameter: %.2f\npitch: %.2f\nquantity: %d",
                 getId(), getName(), getDiameter(), getPitch(), getQuantity());
