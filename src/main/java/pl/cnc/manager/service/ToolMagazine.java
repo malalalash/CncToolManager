@@ -75,7 +75,7 @@ public class ToolMagazine {
 
         System.out.println("Provide tool id to remove:");
         String id = scanner.nextLine().trim();
-        boolean removed = magazine.removeIf(tool -> tool.getId().equals(id));
+        boolean removed = magazine.removeIf(tool -> tool.getId().equalsIgnoreCase(id));
         if (removed) {
             System.out.println("Tool with id: " + id + " has been removed.");
         } else {
