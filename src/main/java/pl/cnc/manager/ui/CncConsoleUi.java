@@ -26,6 +26,7 @@ public class CncConsoleUi {
                 case "1" -> handleAddTool();
                 case "2" -> handleRemoveTool();
                 case "3" -> handleListTools();
+                case "4" -> handleUpdateQuantity();
                 case "0" -> {
                     System.out.println("GOODBYE!");
                     running = false;
@@ -40,6 +41,7 @@ public class CncConsoleUi {
         System.out.println("'1' to add new tool");
         System.out.println("'2' to delete tool");
         System.out.println("'3' to view all tools in magazine");
+        System.out.println("'4' to update quantity");
         System.out.println("'0' to exit\n");
     }
 
@@ -131,6 +133,29 @@ public class CncConsoleUi {
             }
         } catch (Exception e) {
             System.out.println("Error reading inventory: " + e.getMessage());
+        }
+    }
+
+    private void handleUpdateQuantity() {
+        System.out.println("Provide tool id to update:");
+        String id = scanner.nextLine().trim();
+
+        System.out.println("Provide new quantity:");
+        try {
+            int quantity = Integer.parseInt(scanner.nextLine().trim());
+
+            boolean updated = toolService.updateQuantity(id, quantity);
+            if (updated) {
+                System.out.println("Tool with id: " + id + " now has quantity of: " + quantity);
+            } else {
+                System.out.println("No tool with id: " + id);
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("Wrong quantity provided");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Validation Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An unexpected system error occurred: " + e.getMessage());
         }
     }
 }

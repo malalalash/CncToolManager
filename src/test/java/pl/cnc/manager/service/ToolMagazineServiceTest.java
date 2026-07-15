@@ -158,4 +158,55 @@ class ToolMagazineServiceTest {
             verify(repository, times(1)).findAll();
         }
     }
+
+    @Nested
+    @DisplayName("Tests for updateQuantity")
+    class UpdateQuantityTests {
+
+        @Test
+        @DisplayName("Should return true when quantity is successfully updated")
+        void shouldReturnTrueOnSuccessfulUpdate() {
+            when(repository.updateQuantity("D-101", 20)).thenReturn(true);
+
+            boolean result = service.updateQuantity("D-101", 20);
+
+            assertTrue(result);
+            verify(repository, times(1)).updateQuantity("D-101", 20);
+        }
+
+        @Test
+        @DisplayName("Should return false when tool to update does not exist")
+        void shouldReturnFalseWhenToolDoesNotExist() {
+            when(repository.updateQuantity("NON-EXISTENT", 20)).thenReturn(false);
+
+            boolean result = service.updateQuantity("NON-EXISTENT", 20);
+
+            assertFalse(result);
+            verify(repository, times(1)).updateQuantity("NON-EXISTENT", 20);
+        }
+
+        @Test
+        @DisplayName("Should throw IllegalArgumentException when ID is blank")
+        void shouldThrowExceptionWhenIdIsBlank() {
+            IllegalArgumentException exception = assertThrows(
+                    IllegalArgumentException.class,
+                    () -> service.updateQuantity("  ", 20)
+            );
+
+            assertEquals("Tool ID cannot be empty.", exception.getMessage());
+            verifyNoInteractions(repository);
+        }
+
+        @Test
+        @DisplayName("Should throw IllegalArgumentException when quantity is negative")
+        void shouldThrowExceptionWhenQuantityIsNegative() {
+            IllegalArgumentException exception = assertThrows(
+                    IllegalArgumentException.class,
+                    () -> service.updateQuantity("D-101", -1)
+            );
+
+            assertEquals("Quantity cannot be negative.", exception.getMessage());
+            verifyNoInteractions(repository);
+        }
+    }
 }

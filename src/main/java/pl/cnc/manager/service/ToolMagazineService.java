@@ -37,4 +37,14 @@ public class ToolMagazineService {
     public List<Tool> getAllTools() {
         return repository.findAll();
     }
+
+    public boolean updateQuantity(String id, int quantity) {
+        if (id == null || id.isBlank()) {
+            throw new IllegalArgumentException("Tool ID cannot be empty.");
+        }
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative.");
+        }
+        return repository.updateQuantity(id, quantity);
+    }
 }

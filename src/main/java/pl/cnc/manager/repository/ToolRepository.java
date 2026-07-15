@@ -13,4 +13,6 @@ public interface ToolRepository {
     void save(Tool tool);
 
     boolean deleteById(String id);
+
+    boolean updateQuantity(String id, int quantity);
 }

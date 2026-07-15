@@ -117,4 +117,20 @@ public class JdbcToolRepository implements ToolRepository {
             return false;
         }
     }
+
+    @Override
+    public boolean updateQuantity(String id, int quantity) {
+        String sql = "UPDATE tools SET quantity = ? WHERE id = ?";
+        try (Connection conn = dbService.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1, quantity);
+            pstmt.setString(2, id);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("Cannot update quantity for tool (id=" + id + "): " + e.getMessage());
+            return false;
+        }
+    }
+
 }
