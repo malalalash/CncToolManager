@@ -1,6 +1,6 @@
 package pl.cnc.manager;
 
-import pl.cnc.manager.service.DatabaseService;
+import pl.cnc.manager.service.DatabaseConnectionService;
 import pl.cnc.manager.service.ToolMagazineService;
 
 import java.sql.Connection;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class MainApp {
     public static void main(String[] args) {
         System.out.println("Welcome to CNC Tool Manager");
-        DatabaseService db = new DatabaseService();
+        DatabaseConnectionService db = new DatabaseConnectionService();
 
         try (Connection connection = db.connect()) {
             if (connection != null && !connection.isClosed()) {
@@ -20,10 +20,6 @@ public class MainApp {
             System.err.println("Couldn't connect to database");
             e.printStackTrace();
         }
-
-
-
-        ToolMagazineService tm = new ToolMagazineService();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         while (running) {
