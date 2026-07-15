@@ -1,12 +1,20 @@
 package pl.cnc.manager.service;
 
 import pl.cnc.manager.model.*;
+import pl.cnc.manager.repository.ToolRepository;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class ToolMagazineService {
-    public void addTool(List<Tool> magazine, Scanner scanner) {
+
+    private final ToolRepository repository;
+
+    public ToolMagazineService(ToolRepository repository) {
+        this.repository = repository;
+    }
+
+    public void addTool(Scanner scanner) {
         System.out.println("Select tool type:");
         ToolType[] types = ToolType.values();
         for (int i = 0; i < types.length; i++) {
@@ -26,9 +34,13 @@ public class ToolMagazineService {
             System.out.println("Provide id:");
             String id = scanner.nextLine().trim();
 
-            boolean idExists = magazine.stream().anyMatch(tool -> tool.getId().equalsIgnoreCase(id));
-            if (idExists) {
+            if (id.isEmpty()) {
                 System.out.println("Error: Tool with ID '" + id +"' already exists!");
+                return;
+            }
+
+            if (repository.existById(id)) {
+                System.out.println("Tool with ID '"+ id + "' already exists!");
                 return;
             }
 
@@ -60,22 +72,17 @@ public class ToolMagazineService {
                 }
             };
 
-            magazine.add(newTool);
+            repository.save(newTool);
             System.out.println("Tool added: \n" + newTool + "\n");
         } catch (NumberFormatException e) {
             System.out.println("Invalid number entered. Tool not added.");
         }
     }
 
-    public void removeTool(List<Tool> magazine, Scanner scanner) {
-        if (magazine.isEmpty()) {
-            System.out.println("Magazine is empty, nothing to remove.");
-            return;
-        }
-
+    public void removeTool(Scanner scanner) {
         System.out.println("Provide tool id to remove:");
         String id = scanner.nextLine().trim();
-        boolean removed = magazine.removeIf(tool -> tool.getId().equalsIgnoreCase(id));
+        boolean removed = repository.deleteById(id);
         if (removed) {
             System.out.println("Tool with id: " + id + " has been removed.");
         } else {
@@ -83,12 +90,13 @@ public class ToolMagazineService {
         }
     }
 
-    public void listTools(List<Tool> magazine) {
-        if (magazine.isEmpty()) {
+    public void listTools() {
+        List<Tool> tools = repository.findAll();
+        if (tools.isEmpty()) {
             System.out.println("\nMagazine is empty.\n");
         } else {
             System.out.println("--- INVENTORY ---");
-            for (Tool tool : magazine) {
+            for (Tool tool : tools) {
                 System.out.println(tool + "\n");
             }
             System.out.println("------------------\n");
