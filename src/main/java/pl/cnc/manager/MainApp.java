@@ -2,7 +2,6 @@ package pl.cnc.manager;
 
 import pl.cnc.manager.model.*;
 import pl.cnc.manager.service.DatabaseService;
-import pl.cnc.manager.service.FileService;
 import pl.cnc.manager.service.ToolMagazine;
 
 import java.sql.Connection;
@@ -25,8 +24,7 @@ public class MainApp {
         }
 
 
-        FileService fs = new FileService();
-        List<Tool> magazine = fs.loadFromFile();
+
         ToolMagazine tm = new ToolMagazine();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
@@ -35,11 +33,10 @@ public class MainApp {
             String input = scanner.nextLine().trim();
 
             switch (input) {
-                case "1" -> tm.addTool(magazine, scanner);
-                case "2" -> tm.removeTool(magazine, scanner);
-                case "3" -> tm.listTools(magazine);
+                case "1" -> System.out.println("1");
+                case "2" -> System.out.println("2");
+                case "3" -> System.out.println("3");
                 case "0" -> {
-                    fs.saveToFile(magazine);
                     running = false;
                 }
                 default -> System.out.println("Unknown option, try again");
