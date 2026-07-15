@@ -4,6 +4,7 @@ import pl.cnc.manager.repository.JdbcToolRepository;
 import pl.cnc.manager.repository.ToolRepository;
 import pl.cnc.manager.service.DatabaseConnectionService;
 import pl.cnc.manager.service.ToolMagazineService;
+import pl.cnc.manager.ui.CncConsoleUi;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,7 +16,7 @@ public class MainApp {
         DatabaseConnectionService dbService = new DatabaseConnectionService();
 
         try (Connection conn = dbService.connect()) {
-            if(conn != null && !conn.isClosed()) {
+            if (conn != null && !conn.isClosed()) {
                 System.out.println("Connected to database!");
             }
         } catch (SQLException e) {
@@ -26,32 +27,10 @@ public class MainApp {
         ToolRepository repository = new JdbcToolRepository(dbService);
         ToolMagazineService toolService = new ToolMagazineService(repository);
 
-        Scanner scanner = new Scanner(System.in);
-        boolean running = true;
-        while (running) {
-            startupMessage();
-            String input = scanner.nextLine().trim();
-
-            switch (input) {
-                case "1" -> toolService.addTool(scanner);
-                case "2" -> toolService.removeTool(scanner);
-                case "3" -> toolService.listTools();
-                case "0" -> {
-                    System.out.println("GOODBYE!");
-                    running = false;
-                }
-                default -> System.out.println("Unknown option, try again");
-            }
+        try (Scanner scanner = new Scanner(System.in)) {
+            CncConsoleUi ui = new CncConsoleUi(toolService, scanner);
+            ui.start();
         }
-        scanner.close();
-    }
-
-    private static void startupMessage() {
-        System.out.println("\nAvailable options:");
-        System.out.println("'1' to add new tool");
-        System.out.println("'2' to delete tool");
-        System.out.println("'3' to view all tools in magazine");
-        System.out.println("'0' to exit\n");
     }
 }
 
