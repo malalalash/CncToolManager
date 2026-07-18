@@ -39,7 +39,7 @@ public class JdbcToolRepository implements ToolRepository {
                 tools.add(tool);
             }
         } catch (SQLException e) {
-            System.err.println("Cannot fetch tools: " + e.getMessage());
+            throw new ToolRepositoryException("Failed to fetch tools: ", e);
         }
         return tools;
     }
@@ -56,8 +56,7 @@ public class JdbcToolRepository implements ToolRepository {
             }
 
         } catch (SQLException e) {
-            System.err.println("Error checking for tool: " + e.getMessage());
-            return false;
+            throw new ToolRepositoryException("Error checking for tool: ", e);
         }
     }
 
@@ -99,7 +98,7 @@ public class JdbcToolRepository implements ToolRepository {
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Cannot save tool: " + e.getMessage());
+            throw new ToolRepositoryException("Cannot save tool: ", e);
         }
 
     }
@@ -113,8 +112,7 @@ public class JdbcToolRepository implements ToolRepository {
             pstmt.setString(1, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Cannot delete tool: " + e.getMessage());
-            return false;
+            throw new ToolRepositoryException("Cannot delete tool: ", e);
         }
     }
 
@@ -128,8 +126,7 @@ public class JdbcToolRepository implements ToolRepository {
             pstmt.setString(2, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.err.println("Cannot update quantity for tool (id=" + id + "): " + e.getMessage());
-            return false;
+            throw new ToolRepositoryException("Cannot update quantity for tool (id=" + id + "): ", e);
         }
     }
 
