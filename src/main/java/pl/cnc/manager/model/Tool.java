@@ -67,7 +67,11 @@ public abstract class Tool implements Comparable<Tool> {
         if (other == null) {
             throw new NullPointerException("Cannot compare to null");
         }
-        return Double.compare(this.diameter, other.diameter);
+        int result = Double.compare(this.diameter, other.diameter);
+        if (result != 0) {
+            return result;
+        }
+        return this.id.compareTo(other.id);
     }
 
     @Override

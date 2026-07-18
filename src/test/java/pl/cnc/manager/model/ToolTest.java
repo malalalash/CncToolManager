@@ -63,10 +63,20 @@ class ToolTest {
         }
 
         @Test
-        @DisplayName("Should return 0 when diameters are equal")
-        void shouldReturnZeroWhenDiametersAreEqual() {
+        @DisplayName("Should compare by id when diameters are equal")
+        void shouldCompareByIdWhenDiametersAreEqual() {
             Tool t1 = new EndMill("E1", "Mill", 12.00, 3, 2);
             Tool t2 = new EndMill("E2", "Mill2", 12.00, 4, 0);
+
+            assertTrue(t1.compareTo(t2) < 0);
+            assertTrue(t2.compareTo(t1) > 0);
+        }
+
+        @Test
+        @DisplayName("Should return 0 when diameter and id are the same")
+        void shouldReturnZeroWhenSameIdAndDiameter() {
+            Tool t1 = new EndMill("E1", "Mill", 12.00, 3, 2);
+            Tool t2 = new EndMill("E1", "Mill2", 12.00, 9, 0);
 
             assertEquals(0, t1.compareTo(t2));
         }
