@@ -19,5 +19,14 @@ class ToolTest {
             assertEquals(t1,t2);
             assertEquals(t1.hashCode(), t2.hashCode());
         }
+
+        @Test
+        @DisplayName("Should not be equal when ids are different")
+        void shouldNotBeEqualWhenIdsAreDifferent() {
+            Tool t1 = new EndMill("E1", "Mill", 12.00, 3, 2);
+            Tool t2 = new EndMill("E2", "Mill2", 6.00, 4, 0);
+
+            assertNotEquals(t1,t2);
+        }
     }
 }
