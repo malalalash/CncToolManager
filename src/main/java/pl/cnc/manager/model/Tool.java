@@ -1,8 +1,9 @@
 package pl.cnc.manager.model;
 
 import java.util.Locale;
+import java.util.Objects;
 
-public abstract class Tool {
+public abstract class Tool implements Comparable<Tool> {
     private final ToolType type;
     private final String id;
     private final String name;
@@ -54,5 +55,26 @@ public abstract class Tool {
     public String toString() {
         return String.format(Locale.ENGLISH, "### %s ###\nid: %s\nname: %s\ndiameter: %.2f\nquantity: %d",
                 type, id, name, diameter, quantity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public int compareTo(Tool other) {
+        if (other == null) {
+            throw new NullPointerException("Cannot compare to null");
+        }
+        return Double.compare(this.diameter, other.diameter);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tool other = (Tool) o;
+        return Objects.equals(id, other.id);
     }
 }
