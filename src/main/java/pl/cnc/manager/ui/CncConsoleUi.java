@@ -99,6 +99,8 @@ public class CncConsoleUi {
             System.out.println("Invalid number entered. Tool was not added.");
         } catch (IllegalArgumentException e) {
             System.out.println("Validation Error: " + e.getMessage());
+        } catch (ToolRepositoryException e) {
+            System.err.println("Database error: Could not add tool: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("An unexpected system error occurred: " + e.getMessage());
         }
@@ -117,6 +119,8 @@ public class CncConsoleUi {
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
+        } catch (ToolRepositoryException e) {
+            System.err.println("Database error: Could not remove tool: " + e.getMessage());
         }
     }
 
@@ -133,7 +137,7 @@ public class CncConsoleUi {
                 System.out.println("------------------\n");
             }
         } catch (ToolRepositoryException e) {
-            System.err.println("Error reading inventory: " + e.getMessage());
+            System.out.println("Error reading inventory: " + e.getMessage());
         }
     }
 
@@ -152,9 +156,11 @@ public class CncConsoleUi {
                 System.out.println("No tool with id: " + id);
             }
         } catch (NumberFormatException e) {
-            System.err.println("Wrong quantity provided");
+            System.out.println("Wrong quantity provided");
         } catch (IllegalArgumentException e) {
             System.out.println("Validation Error: " + e.getMessage());
+        } catch (ToolRepositoryException e) {
+            System.out.println("Database error: Could not update quantity: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("An unexpected system error occurred: " + e.getMessage());
         }
