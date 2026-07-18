@@ -74,33 +74,37 @@ public class JdbcToolRepository implements ToolRepository {
             pstmt.setDouble(3, tool.getDiameter());
             pstmt.setInt(4, tool.getQuantity());
 
-            if (tool instanceof Drill) {
-                pstmt.setString(5, ToolType.DRILL.name());
-                pstmt.setNull(6, Types.INTEGER);
-                pstmt.setNull(7, Types.INTEGER);
-                pstmt.setNull(8, Types.DOUBLE);
-            } else if (tool instanceof EndMill endMill) {
-                pstmt.setString(5, ToolType.END_MILL.name());
-                pstmt.setInt(6, endMill.getFlutes());
-                pstmt.setNull(7, Types.INTEGER);
-                pstmt.setNull(8, Types.DOUBLE);
-            } else if (tool instanceof FaceMill faceMill) {
-                pstmt.setString(5, ToolType.FACE_MILL.name());
-                pstmt.setNull(6, Types.INTEGER);
-                pstmt.setInt(7, faceMill.getInserts());
-                pstmt.setNull(8, Types.DOUBLE);
-            } else if (tool instanceof Tap tap) {
-                pstmt.setString(5, ToolType.TAP.name());
-                pstmt.setNull(6, Types.INTEGER);
-                pstmt.setNull(7, Types.INTEGER);
-                pstmt.setDouble(8, tap.getPitch());
+            switch (tool) {
+                case Drill drill -> {
+                    pstmt.setString(5, ToolType.DRILL.name());
+                    pstmt.setNull(6, Types.INTEGER);
+                    pstmt.setNull(7, Types.INTEGER);
+                    pstmt.setNull(8, Types.DOUBLE);
+                }
+                case EndMill endMill -> {
+                    pstmt.setString(5, ToolType.END_MILL.name());
+                    pstmt.setInt(6, endMill.getFlutes());
+                    pstmt.setNull(7, Types.INTEGER);
+                    pstmt.setNull(8, Types.DOUBLE);
+                }
+                case FaceMill faceMill -> {
+                    pstmt.setString(5, ToolType.FACE_MILL.name());
+                    pstmt.setNull(6, Types.INTEGER);
+                    pstmt.setInt(7, faceMill.getInserts());
+                    pstmt.setNull(8, Types.DOUBLE);
+                }
+                case Tap tap -> {
+                    pstmt.setString(5, ToolType.TAP.name());
+                    pstmt.setNull(6, Types.INTEGER);
+                    pstmt.setNull(7, Types.INTEGER);
+                    pstmt.setDouble(8, tap.getPitch());
+                }
+                default -> throw new IllegalArgumentException("Unexpected value: " + tool);
             }
-
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new ToolRepositoryException("Cannot save tool: ", e);
         }
-
     }
 
     @Override
@@ -129,5 +133,4 @@ public class JdbcToolRepository implements ToolRepository {
             throw new ToolRepositoryException("Cannot update quantity for tool (id=" + id + "): ", e);
         }
     }
-
 }
