@@ -1,6 +1,7 @@
 package pl.cnc.manager.ui;
 
 import pl.cnc.manager.model.*;
+import pl.cnc.manager.repository.ToolRepositoryException;
 import pl.cnc.manager.service.ToolMagazineService;
 
 import java.util.List;
@@ -131,8 +132,8 @@ public class CncConsoleUi {
                 }
                 System.out.println("------------------\n");
             }
-        } catch (Exception e) {
-            System.out.println("Error reading inventory: " + e.getMessage());
+        } catch (ToolRepositoryException e) {
+            System.err.println("Error reading inventory: " + e.getMessage());
         }
     }
 

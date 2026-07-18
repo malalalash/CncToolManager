@@ -2,6 +2,7 @@ package pl.cnc.manager;
 
 import pl.cnc.manager.repository.JdbcToolRepository;
 import pl.cnc.manager.repository.ToolRepository;
+import pl.cnc.manager.repository.ToolRepositoryException;
 import pl.cnc.manager.service.DatabaseConnectionService;
 import pl.cnc.manager.service.ToolMagazineService;
 import pl.cnc.manager.ui.CncConsoleUi;
@@ -30,6 +31,9 @@ public class MainApp {
         try (Scanner scanner = new Scanner(System.in)) {
             CncConsoleUi ui = new CncConsoleUi(toolService, scanner);
             ui.start();
+        } catch (ToolRepositoryException e) {
+            System.err.println("Database error: "+ e.getMessage());
+            System.exit(1);
         }
     }
 }
