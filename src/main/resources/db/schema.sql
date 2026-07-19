@@ -22,3 +22,10 @@ CREATE TABLE IF NOT EXISTS public.tools
     ON DELETE NO ACTION,
     CONSTRAINT tools_quantity_check CHECK (quantity >= 0)
 );
+
+INSERT INTO tool_types (type, description) VALUES
+        ('DRILL', 'Drill bit'),
+        ('END_MILL', 'End mill cutter'),
+        ('FACE_MILL', 'Face mill cutter'),
+        ('TAP', 'Thread tap')
+    ON CONFLICT (type) DO NOTHING;
