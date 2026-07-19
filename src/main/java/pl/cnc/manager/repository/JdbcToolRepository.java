@@ -123,8 +123,8 @@ public class JdbcToolRepository implements ToolRepository {
     @Override
     public boolean updateQuantity(String id, int quantity) {
         String sql = "UPDATE tools SET quantity = ? WHERE id = ?";
-        try (Connection conn = dbService.connect()) {
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+        try (Connection conn = dbService.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, quantity);
             pstmt.setString(2, id);
