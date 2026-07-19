@@ -14,7 +14,11 @@ import java.util.Scanner;
 public class MainApp {
     public static void main(String[] args) {
         System.out.println("Welcome to CNC Tool Manager");
-        DatabaseConnectionService dbService = new DatabaseConnectionService();
+        DatabaseConnectionService dbService = new DatabaseConnectionService(
+                System.getenv("DB_URL"),
+                System.getenv("DB_USER"),
+                System.getenv("DB_PASSWORD")
+        );
 
         try (Connection conn = dbService.connect()) {
             if (conn != null && !conn.isClosed()) {
