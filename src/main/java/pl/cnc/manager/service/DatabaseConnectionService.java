@@ -9,20 +9,16 @@ public class DatabaseConnectionService {
     private final String USER;
     private final String PASSWORD;
 
-    public DatabaseConnectionService() {
-        this(System.getenv("DB_URL"), System.getenv("DB_USER"), System.getenv("DB_PASSWORD"));
-    }
-
     public DatabaseConnectionService(String url, String user, String password) {
+        if (url == null || url.isBlank()) {
+            throw new IllegalArgumentException("Database URL cannot be null or empty");
+        }
         this.URL = url;
         this.USER = user;
         this.PASSWORD = password;
     }
 
     public Connection connect() throws SQLException {
-        if (URL == null || URL.isBlank()) {
-            throw new SQLException("DB_URL environment variable is not set");
-        }
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
