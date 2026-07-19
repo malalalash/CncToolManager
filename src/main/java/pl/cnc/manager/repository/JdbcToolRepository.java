@@ -17,7 +17,7 @@ public class JdbcToolRepository implements ToolRepository {
     @Override
     public List<Tool> findAll() {
         List<Tool> tools = new ArrayList<>();
-        String sql = "SELECT * FROM tools";
+        String sql = "SELECT id, name, diameter, quantity, type, flutes, inserts, pitch FROM tools";
 
         try (Connection conn = dbService.connect();
              Statement stmt = conn.createStatement();
