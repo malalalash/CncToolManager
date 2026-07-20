@@ -140,4 +140,60 @@ class JdbcToolRepositoryTest {
         repository.save(tool);
         assertTrue(repository.existById("D1"));
     }
+
+    @Test
+    @DisplayName("deleteById() should delete existing tool")
+    void shouldDeleteExistingTool() {
+        Drill tool = new Drill("D1", "Drill 8mm", 8.00, 10);
+        repository.save(tool);
+
+        assertTrue(repository.deleteById("D1"));
+        assertFalse(repository.existById("D1"));
+        assertFalse(repository.deleteById("D1"));
+    }
+
+    @Test
+    @DisplayName("updateQuantity() should update tool's quantity")
+    void shouldUpdateQuantity() {
+        Drill tool = new Drill("D1", "Drill 8mm", 8.00, 10);
+
+        repository.save(tool);
+        assertTrue(repository.updateQuantity("D1", 1));
+
+        Tool updatedTool = repository.findAll().getFirst();
+        assertEquals(1, updatedTool.getQuantity());
+    }
+
+    @Test
+    @DisplayName("updateQuantity() returns false for non existing id")
+    void shouldReturnFalseForNonExistingId() {
+        assertFalse(repository.updateQuantity("D1", 2));
+    }
+
+    @Test
+    @DisplayName("database enforces CHECK (quantity >= 0) independently from java validation")
+    void shouldEnforceNegativeQuantityAtDatabase() throws SQLException {
+        String sql = "INSERT INTO tools (id, name, diameter, quantity, type, flutes, inserts, pitch) " +
+                "VALUES (?, ?, ?, ? ,? ,? ,?, ?)";
+
+        try (Connection conn = dbService.connect();
+        PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, "D1");
+            pstmt.setString(2, "Drill");
+            pstmt.setDouble(3, 1.0);
+            pstmt.setInt(4, -9);
+            pstmt.setString(5, "DRILL");
+
+            assertThrows(SQLException.class, pstmt::executeUpdate);
+        }
+    }
+
+    @Test
+    @DisplayName("findAll() checks for empty database")
+    void shouldReturnNothingIfDatabaseIsEmpty() {
+        assertTrue(repository.findAll().isEmpty());
+    }
+
+    @Test
+
 }
