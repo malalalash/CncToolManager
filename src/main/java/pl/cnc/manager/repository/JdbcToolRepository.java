@@ -134,11 +134,15 @@ public class JdbcToolRepository implements ToolRepository {
     }
 
     public boolean issueTool(String id, int amount) {
+        if (amount <=0) {
+            throw new IllegalArgumentException("Amount to be issued must be positive");
+        }
         String selectSQL = "SELECT quantity FROM tools WHERE id = ? FOR UPDATE";
         String updateSQL = "UPDATE tools SET quantity = quantity - ? WHERE id = ?";
         String insertSQL = "INSERT INTO tool_issues (tool_id, amount, issued_at) VALUES (?, ?, now())";
 
         try (Connection conn = dbService.connect()) {
+            conn.setAutoCommit(false);
             try (PreparedStatement select = conn.prepareStatement(selectSQL)) {
                 select.setString(1, id);
                 try (ResultSet rs = select.executeQuery()) {

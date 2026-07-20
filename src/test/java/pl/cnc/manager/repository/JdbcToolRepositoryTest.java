@@ -1,9 +1,6 @@
 package pl.cnc.manager.repository;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
@@ -11,10 +8,7 @@ import pl.cnc.manager.model.*;
 import pl.cnc.manager.service.DatabaseConnectionService;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -209,5 +203,85 @@ class JdbcToolRepositoryTest {
         assertInstanceOf(Drill.class, tools.getFirst());
         assertInstanceOf(EndMill.class, tools.get(1));
         assertInstanceOf(Tap.class, tools.get(2));
+    }
+
+    @Nested
+    @DisplayName("Tests for issueTool")
+    class IssueToolTests {
+        @Test
+        @DisplayName("issueTool() test should issue correct amount")
+        void shouldIssueCorrectAmount() {
+            Tool drill = new Drill("D1", "Drill", 2.00,5);
+            repository.save(drill);
+            assertTrue(repository.issueTool("D1", 1));
+            Tool updatedTool = repository.findAll().getFirst();
+            assertEquals(4, updatedTool.getQuantity());
+        }
+
+        @Test
+        @DisplayName("issueTool() should return false when tool does not exist")
+        void shouldReturnFalseWhenToolDoesNotExist() {
+            assertFalse(repository.issueTool("D1", 6));
+        }
+
+        @Test
+        @DisplayName("issueTool() should return false when amount exceeds available quantity")
+        void shouldReturnFalseWhenAmountExceedsQuantity() {
+            Tool drill = new Drill("D1", "Drill", 2.00, 5);
+            repository.save(drill);
+
+            assertFalse(repository.issueTool("D1", 6));
+        }
+
+        @Test
+        @DisplayName("issueTool() should not change quantity when amount exceeds available quantity")
+        void shouldNotChangeQuantityOnFailedIssue() {
+            Tool drill = new Drill("D1", "Drill", 2.00, 5);
+            repository.save(drill);
+
+            assertFalse(repository.issueTool("D1", 6));
+
+            Tool unchanged = repository.findAll().getFirst();
+            assertEquals(5, unchanged.getQuantity());
+        }
+
+        @Test
+        @DisplayName("issueTool() should create a log entry in tool_issues")
+        void shouldCreateIssueLogEntry() throws SQLException {
+            Tool drill = new Drill("D1", "Drill", 2.00, 5);
+            repository.save(drill);
+
+            repository.issueTool("D1", 2);
+
+            try (Connection conn = dbService.connect();
+                 PreparedStatement stmt = conn.prepareStatement(
+                         "SELECT amount FROM tool_issues WHERE tool_id = ?")) {
+                stmt.setString(1, "D1");
+                try (ResultSet rs = stmt.executeQuery()) {
+                    assertTrue(rs.next());
+                    assertEquals(2, rs.getInt("amount"));
+                    assertFalse(rs.next());
+                }
+            }
+        }
+
+        @Test
+        @DisplayName("issueTool() should throw IllegalArgumentException for non-positive amount")
+        void shouldThrowExceptionForNonPositiveAmount() {
+            assertThrows(IllegalArgumentException.class, () -> repository.issueTool("D1", 0));
+            assertThrows(IllegalArgumentException.class, () -> repository.issueTool("D1", -3));
+        }
+
+        @Test
+        @DisplayName("issueTool() should allow issuing exact available amount")
+        void shouldAllowIssuingExactAmount() {
+            Tool drill = new Drill("D1", "Drill", 10.00, 5);
+            repository.save(drill);
+
+            assertTrue(repository.issueTool("D1", 5));
+
+            Tool updatedDrill = repository.findAll().getFirst();
+            assertEquals(0, updatedDrill.getQuantity());
+        }
     }
 }
