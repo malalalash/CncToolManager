@@ -28,11 +28,13 @@ CREATE TABLE IF NOT EXISTS public.tool_issues
     id BIGSERIAL PRIMARY KEY,
     tool_id character varying(50) NOT NULL,
     amount integer NOT NULL,
+    operation_type character varying(20) NOT NULL,
     issued_at TIMESTAMP NOT NULL DEFAULT now(),
         CONSTRAINT fk_tool_id FOREIGN KEY (tool_id)
         REFERENCES public.tools (id)
         ON DELETE RESTRICT,
-    CONSTRAINT tool_issues_amount_check CHECK (amount > 0)
+    CONSTRAINT tool_issues_amount_check CHECK (amount > 0),
+    CONSTRAINT tool_issues_operation_type_check CHECK (operation_type IN ('PICKUP', 'RETURN'))
 );
 
 INSERT INTO tool_types (type, description) VALUES

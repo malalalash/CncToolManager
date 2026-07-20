@@ -175,6 +175,13 @@ public class JdbcToolRepository implements ToolRepository {
 
     @Override
     public boolean returnTool(String id, int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be positive.");
+        }
+        if (id == null || id.isBlank()) {
+            throw new IllegalArgumentException("ID cannot be empty.");
+        }
+        String selectSQL = "SELECT ";
         return false;
     }
 }
