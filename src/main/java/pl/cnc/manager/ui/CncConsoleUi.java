@@ -43,6 +43,7 @@ public class CncConsoleUi {
         System.out.println("'2' to delete tool");
         System.out.println("'3' to view all tools in magazine");
         System.out.println("'4' to update quantity");
+        System.out.println("'5' to issue tool");
         System.out.println("'0' to exit\n");
     }
 
@@ -161,6 +162,29 @@ public class CncConsoleUi {
             System.out.println("Validation Error: " + e.getMessage());
         } catch (ToolRepositoryException e) {
             System.out.println("Database error: Could not update quantity: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An unexpected system error occurred: " + e.getMessage());
+        }
+    }
+    private void handleIssueTool() {
+        System.out.println("Provide tool id to issue:");
+        String id = scanner.nextLine().trim();
+
+        System.out.println("Provide quantity to issue:");
+        try {
+            int amount = Integer.parseInt(scanner.nextLine().trim());
+            boolean issued = toolService.issueTool(id, amount);
+            if (issued) {
+                System.out.println("Tool with id: " + id + " has been issued with amount of: " + amount);
+            } else {
+                System.out.println("No tool with id: " + id);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Wrong amount provided");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Validation error: " + e.getMessage());
+        } catch (ToolRepositoryException e) {
+            System.out.println("Database error: Could not issue tool: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("An unexpected system error occurred: " + e.getMessage());
         }
