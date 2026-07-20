@@ -28,6 +28,7 @@ public class CncConsoleUi {
                 case "2" -> handleRemoveTool();
                 case "3" -> handleListTools();
                 case "4" -> handleUpdateQuantity();
+                case "5" -> handleIssueTool();
                 case "0" -> {
                     System.out.println("GOODBYE!");
                     running = false;
