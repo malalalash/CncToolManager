@@ -23,6 +23,18 @@ CREATE TABLE IF NOT EXISTS public.tools
     CONSTRAINT tools_quantity_check CHECK (quantity >= 0)
 );
 
+CREATE TABLE IF NOT EXISTS public.tool_issues
+(
+    id BIGSERIAL PRIMARY KEY,
+    tool_id character varying(50) NOT NULL,
+    amount integer NOT NULL,
+    issued_at TIMESTAMP NOT NULL DEFAULT now(),
+        CONSTRAINT fk_tool_id FOREIGN KEY (tool_id)
+        REFERENCES public.tools (id)
+        ON DELETE RESTRICT,
+    CONSTRAINT tool_issues_amount_check CHECK (amount > 0)
+);
+
 INSERT INTO tool_types (type, description) VALUES
         ('DRILL', 'Drill bit'),
         ('END_MILL', 'End mill cutter'),
