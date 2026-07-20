@@ -284,5 +284,21 @@ class JdbcToolRepositoryTest {
             Tool updatedDrill = repository.findAll().getFirst();
             assertEquals(0, updatedDrill.getQuantity());
         }
+
+        @Test
+        @DisplayName("checks CONSTRAINT CHECK (amount > 0) at the database level")
+        void shouldEnforceNonPositiveAmountAtDatabase() throws SQLException {
+            Tool drill = new Drill("D1", "Drill", 10.00, 5);
+            repository.save(drill);
+
+            String sql = "INSERT INTO tool_issues (tool_id, amount) VALUES (?, ?)";
+            try (Connection conn = dbService.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, "D1");
+                pstmt.setInt(2, -3);
+
+                assertThrows(SQLException.class, pstmt::executeUpdate);
+            }
+        }
     }
 }
