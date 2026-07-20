@@ -169,7 +169,7 @@ class JdbcToolRepositoryTest {
                 "VALUES (?, ?, ?, ? ,? ,? ,?, ?)";
 
         try (Connection conn = dbService.connect();
-        PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, "D1");
             pstmt.setString(2, "Drill");
             pstmt.setDouble(3, 1.0);
@@ -189,7 +189,7 @@ class JdbcToolRepositoryTest {
     @Test
     @DisplayName("findAll() should list multiple tools in database properly")
     void shouldListAllTools() {
-        Tool drill = new Drill("D1", "Drill", 2.00,1);
+        Tool drill = new Drill("D1", "Drill", 2.00, 1);
         Tool endMill = new EndMill("EM1", "End Mill", 6.00, 3, 4);
         Tool tap = new Tap("T1", "Tap", 8.00, 1.25, 4);
 
@@ -211,7 +211,7 @@ class JdbcToolRepositoryTest {
         @Test
         @DisplayName("issueTool() test should issue correct amount")
         void shouldIssueCorrectAmount() {
-            Tool drill = new Drill("D1", "Drill", 2.00,5);
+            Tool drill = new Drill("D1", "Drill", 2.00, 5);
             repository.save(drill);
             assertTrue(repository.issueTool("D1", 1));
             Tool updatedTool = repository.findAll().getFirst();
@@ -255,11 +255,12 @@ class JdbcToolRepositoryTest {
 
             try (Connection conn = dbService.connect();
                  PreparedStatement stmt = conn.prepareStatement(
-                         "SELECT amount FROM tool_issues WHERE tool_id = ?")) {
+                         "SELECT amount, issued_at FROM tool_issues WHERE tool_id = ?")) {
                 stmt.setString(1, "D1");
                 try (ResultSet rs = stmt.executeQuery()) {
                     assertTrue(rs.next());
                     assertEquals(2, rs.getInt("amount"));
+                    assertNotNull(rs.getTimestamp("issued_at"));
                     assertFalse(rs.next());
                 }
             }
