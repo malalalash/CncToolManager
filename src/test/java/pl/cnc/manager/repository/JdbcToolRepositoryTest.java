@@ -293,7 +293,7 @@ class JdbcToolRepositoryTest {
 
             String sql = "INSERT INTO tool_issues (tool_id, amount) VALUES (?, ?)";
             try (Connection conn = dbService.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, "D1");
                 pstmt.setInt(2, -3);
 
