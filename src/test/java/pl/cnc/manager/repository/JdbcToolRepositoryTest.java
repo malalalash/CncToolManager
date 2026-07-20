@@ -195,5 +195,21 @@ class JdbcToolRepositoryTest {
     }
 
     @Test
+    @DisplayName("findAll() should list multiple tools in database properly")
+    void shouldListAllTools() {
+        Tool drill = new Drill("D1", "Drill", 2.00,1);
+        Tool endMill = new EndMill("EM1", "End Mill", 6.00, 3, 4);
+        Tool tap = new Tap("T1", "Tap", 8.00, 1.25, 4);
 
+        repository.save(drill);
+        repository.save(endMill);
+        repository.save(tap);
+
+        List<Tool> tools = repository.findAll();
+
+        assertEquals(3, repository.findAll().size());
+        assertInstanceOf(Drill.class, tools.getFirst());
+        assertInstanceOf(EndMill.class, tools.get(1));
+        assertInstanceOf(Tap.class, tools.get(2));
+    }
 }
