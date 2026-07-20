@@ -17,4 +17,6 @@ public interface ToolRepository {
     boolean updateQuantity(String id, int quantity);
 
     boolean issueTool(String id, int amount);
+
+    boolean returnTool(String id, int amount);
 }

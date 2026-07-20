@@ -172,4 +172,9 @@ public class JdbcToolRepository implements ToolRepository {
             throw new ToolRepositoryException("Failed to issue tool: ", e);
         }
     }
+
+    @Override
+    public boolean returnTool(String id, int amount) {
+        return false;
+    }
 }
