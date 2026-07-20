@@ -134,54 +134,63 @@ public class JdbcToolRepository implements ToolRepository {
     }
 
     public boolean issueTool(String id, int amount) {
-        if (amount <=0) {
-            throw new IllegalArgumentException("Amount to be issued must be positive");
-        }
-        String selectSQL = "SELECT quantity FROM tools WHERE id = ? FOR UPDATE";
-        String updateSQL = "UPDATE tools SET quantity = quantity - ? WHERE id = ?";
-        String insertSQL = "INSERT INTO tool_issues (tool_id, amount, issued_at) VALUES (?, ?, now())";
-
-        try (Connection conn = dbService.connect()) {
-            conn.setAutoCommit(false);
-            try (PreparedStatement select = conn.prepareStatement(selectSQL)) {
-                select.setString(1, id);
-                try (ResultSet rs = select.executeQuery()) {
-                    if (!rs.next() || rs.getInt("quantity") < amount) {
-                        conn.rollback();
-                        return false;
-                    }
-                }
-            }
-
-            try (PreparedStatement update = conn.prepareStatement(updateSQL)) {
-                update.setInt(1, amount);
-                update.setString(2, id);
-                update.executeUpdate();
-            }
-
-            try (PreparedStatement insert = conn.prepareStatement(insertSQL)) {
-                insert.setString(1, id);
-                insert.setInt(2, amount);
-                insert.executeUpdate();
-            }
-
-            conn.commit();
-            return true;
-
-        } catch (SQLException e) {
-            throw new ToolRepositoryException("Failed to issue tool: ", e);
-        }
+        return changeQuantity(id, amount, OperationType.PICKUP);
     }
 
     @Override
     public boolean returnTool(String id, int amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be positive.");
-        }
+        return changeQuantity(id, amount, OperationType.RETURN);
+    }
+
+    public boolean changeQuantity(String id, int amount, OperationType operationType) {
         if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("ID cannot be empty.");
+            throw new IllegalArgumentException("ID cannot be empty");
         }
-        String selectSQL = "SELECT ";
-        return false;
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+
+        int delta = operationType == OperationType.PICKUP ? -amount : amount;
+
+        String selectSQL = "SELECT quantity FROM tools WHERE id = ? FOR UPDATE";
+        String updateSQL = "UPDATE tools SET quantity = quantity + ? WHERE id = ?";
+        String insertSQL = "INSERT INTO tool_issues (tool_id, amount, operation_type) VALUES (?, ?, ?)";
+
+        try (Connection conn = dbService.connect()) {
+            conn.setAutoCommit(false);
+            try {
+                try (PreparedStatement select = conn.prepareStatement(selectSQL)) {
+                    select.setString(1, id);
+                    try (ResultSet rs = select.executeQuery()) {
+                        if (!rs.next() || rs.getInt("quantity") + delta < 0) {
+                            conn.rollback();
+                            return false;
+                        }
+                    }
+                }
+
+                try (PreparedStatement update = conn.prepareStatement(updateSQL)) {
+                    update.setInt(1, delta);
+                    update.setString(2, id);
+                    update.executeUpdate();
+                }
+
+                try (PreparedStatement insert = conn.prepareStatement(insertSQL)) {
+                    insert.setString(1, id);
+                    insert.setInt(2, amount);
+                    insert.setString(3, operationType.name());
+                    insert.executeUpdate();
+                }
+
+                conn.commit();
+                return true;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            throw new ToolRepositoryException(
+                    "Failed to " + operationType.name().toLowerCase() + " tool (id=" + id + "): ", e);
+        }
     }
 }

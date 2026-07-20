@@ -19,4 +19,6 @@ public interface ToolRepository {
     boolean issueTool(String id, int amount);
 
     boolean returnTool(String id, int amount);
+
+    boolean changeQuantity(String id, int amount, OperationType type);
 }
