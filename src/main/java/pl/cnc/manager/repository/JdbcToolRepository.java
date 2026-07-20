@@ -132,4 +132,40 @@ public class JdbcToolRepository implements ToolRepository {
             throw new ToolRepositoryException("Cannot update quantity for tool (id=" + id + "): ", e);
         }
     }
+
+    public boolean issueTool(String id, int amount) {
+        String selectSQL = "SELECT quantity FROM tools WHERE id = ? FOR UPDATE";
+        String updateSQL = "UPDATE tools SET quantity = quantity - ? WHERE id = ?";
+        String insertSQL = "INSERT INTO tool_issues (tool_id, amount, issued_at) VALUES (?, ?, now())";
+
+        try (Connection conn = dbService.connect()) {
+            try (PreparedStatement select = conn.prepareStatement(selectSQL)) {
+                select.setString(1, id);
+                try (ResultSet rs = select.executeQuery()) {
+                    if (!rs.next() || rs.getInt("quantity") < amount) {
+                        conn.rollback();
+                        return false;
+                    }
+                }
+            }
+
+            try (PreparedStatement update = conn.prepareStatement(updateSQL)) {
+                update.setInt(1, amount);
+                update.setString(2, id);
+                update.executeUpdate();
+            }
+
+            try (PreparedStatement insert = conn.prepareStatement(insertSQL)) {
+                insert.setString(1, id);
+                insert.setInt(2, amount);
+                insert.executeUpdate();
+            }
+
+            conn.commit();
+            return true;
+
+        } catch (SQLException e) {
+            throw new ToolRepositoryException("Failed to issue tool: ", e);
+        }
+    }
 }
