@@ -54,7 +54,6 @@ public class JdbcToolRepository implements ToolRepository {
             try (ResultSet rs = pstmt.executeQuery()) {
                 return rs.next();
             }
-
         } catch (SQLException e) {
             throw new ToolRepositoryException("Error checking for tool: ", e);
         }

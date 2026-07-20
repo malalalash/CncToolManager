@@ -51,7 +51,7 @@ class JdbcToolRepositoryTest {
     @Test
     @DisplayName("save() and findAll() should save and find Drill")
     void shouldSaveAndFindDrill() {
-        Drill tool =new Drill("D1", "Drill 8mm", 8.00, 10);
+        Drill tool = new Drill("D1", "Drill 8mm", 8.00, 10);
         repository.save(tool);
 
         List<Tool> tools = repository.findAll();
@@ -81,5 +81,63 @@ class JdbcToolRepositoryTest {
         assertEquals(8.00, found.getDiameter());
         assertEquals(10, found.getQuantity());
         assertEquals(3, found.getFlutes());
+    }
+
+    @Test
+    @DisplayName("save() and findAll() should save and find Face Mill")
+    void shouldSaveAndFindFaceMill() {
+        FaceMill tool = new FaceMill("FM1", "Face Mill 8mm", 8.00, 3, 10);
+        repository.save(tool);
+
+        List<Tool> tools = repository.findAll();
+
+        assertEquals(1, tools.size());
+        FaceMill found = (FaceMill) tools.getFirst();
+        assertInstanceOf(FaceMill.class, found);
+        assertEquals("FM1", found.getId());
+        assertEquals("Face Mill 8mm", found.getName());
+        assertEquals(8.00, found.getDiameter());
+        assertEquals(10, found.getQuantity());
+        assertEquals(3, found.getInserts());
+    }
+
+    @Test
+    @DisplayName("save() and findAll() should save and find Tap")
+    void shouldSaveAndFindTap() {
+        Tap tool = new Tap("T1", "Tap M8", 8.00, 1.25, 10);
+        repository.save(tool);
+
+        List<Tool> tools = repository.findAll();
+
+        assertEquals(1, tools.size());
+        Tap found = (Tap) tools.getFirst();
+        assertInstanceOf(Tap.class, found);
+        assertEquals("T1", found.getId());
+        assertEquals("Tap M8", found.getName());
+        assertEquals(8.00, found.getDiameter());
+        assertEquals(10, found.getQuantity());
+        assertEquals(1.25, found.getPitch());
+    }
+
+    @Test
+    @DisplayName("save() with duplicated ID violates PRIMARY KEY and throws ToolRepositoryException")
+    void shouldFailOnDuplicatedId() {
+        Drill tool = new Drill("D1", "Drill 8mm", 8.00, 10);
+        repository.save(tool);
+
+        ToolRepositoryException exception = assertThrows(ToolRepositoryException.class,
+                () -> repository.save(tool));
+
+        assertInstanceOf(SQLException.class, exception.getCause());
+    }
+
+    @Test
+    @DisplayName("existById() reflects database table")
+    void shouldReportExistence() {
+        assertFalse(repository.existById("D1"));
+
+        Drill tool = new Drill("D1", "Drill 8mm", 8.00, 10);
+        repository.save(tool);
+        assertTrue(repository.existById("D1"));
     }
 }
