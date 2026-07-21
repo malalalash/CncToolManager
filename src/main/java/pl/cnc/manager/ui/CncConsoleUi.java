@@ -113,18 +113,18 @@ public class CncConsoleUi {
     }
 
     private void handleListTools() {
-            runSafely("List tool(s)", () -> {
-                List<Tool> tools = toolService.getAllTools();
-                if (tools.isEmpty()) {
-                    System.out.println("\nMagazine is empty.\n");
-                } else {
-                    System.out.println("--- INVENTORY ---");
-                    for (Tool tool : tools) {
-                        System.out.println(tool + "\n");
-                    }
-                    System.out.println("------------------\n");
+        runSafely("List tool(s)", () -> {
+            List<Tool> tools = toolService.getAllTools();
+            if (tools.isEmpty()) {
+                System.out.println("\nMagazine is empty.\n");
+            } else {
+                System.out.println("--- INVENTORY ---");
+                for (Tool tool : tools) {
+                    System.out.println(tool + "\n");
                 }
-            });
+                System.out.println("------------------\n");
+            }
+        });
     }
 
     private void handleUpdateQuantity() {
