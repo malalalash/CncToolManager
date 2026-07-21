@@ -13,11 +13,12 @@ public final class EndMill extends Tool {
         this.flutes = flutes;
     }
 
-    public int getFlutes() { return flutes; }
+    public int getFlutes() {
+        return flutes;
+    }
 
     @Override
-    public String toString() {
-        return String.format(Locale.ENGLISH, "### END_MILL ###\nid: %s\nname: %s\ndiameter: %.2f\nflutes: %d\nquantity: %d",
-                getId(), getName(), getDiameter(), getFlutes(), getQuantity());
+    protected String getExtraDetails() {
+        return String.format(Locale.ENGLISH, "flutes: %d", flutes);
     }
 }

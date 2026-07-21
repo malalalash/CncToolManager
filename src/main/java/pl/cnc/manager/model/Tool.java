@@ -24,9 +24,7 @@ public sealed abstract class Tool implements Comparable<Tool> permits Drill, End
         this.diameter = diameter;
     }
 
-    public ToolType getType() {
-        return type;
-    }
+    protected abstract String getExtraDetails();
 
     public String getId() {
         return id;
@@ -44,6 +42,10 @@ public sealed abstract class Tool implements Comparable<Tool> permits Drill, End
         return quantity;
     }
 
+    public ToolType getType() {
+        return type;
+    }
+
     public void setQuantity(int quantity) {
         if (quantity < 0) {
             throw new IllegalArgumentException("Quantity cannot be negative");
@@ -53,8 +55,12 @@ public sealed abstract class Tool implements Comparable<Tool> permits Drill, End
 
     @Override
     public String toString() {
-        return String.format(Locale.ENGLISH, "### %s ###\nid: %s\nname: %s\ndiameter: %.2f\nquantity: %d",
-                type, id, name, diameter, quantity);
+        String extra = getExtraDetails();
+        String extraFormatted = (extra == null || extra.isEmpty()) ? "" : extra + "\n";
+
+        return String.format(Locale.ENGLISH,
+                "### %s ###\nid: %s\nname: %s\ndiameter: %.2f\n%squantity: %d",
+                type, id, name, diameter, extraFormatted, quantity);
     }
 
     @Override

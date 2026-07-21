@@ -13,11 +13,12 @@ public final class Tap extends Tool {
         this.pitch = pitch;
     }
 
-    public double getPitch() { return pitch; }
+    public double getPitch() {
+        return pitch;
+    }
 
     @Override
-    public String toString() {
-        return String.format(Locale.ENGLISH, "### TAP ###\nid: %s\nname: %s\ndiameter: %.2f\npitch: %.2f\nquantity: %d",
-                getId(), getName(), getDiameter(), getPitch(), getQuantity());
+    protected String getExtraDetails() {
+        return String.format(Locale.ENGLISH, "pitch: %.2f", pitch);
     }
 }
