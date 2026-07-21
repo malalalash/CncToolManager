@@ -41,11 +41,11 @@ class ToolMagazineServiceTest {
         @Test
         @DisplayName("Should successfully add a tool when it is valid and does not exist")
         void shouldAddToolSuccessfully() {
-            when(repository.existById("D-101")).thenReturn(false);
+            when(repository.existsById("D-101")).thenReturn(false);
 
             assertDoesNotThrow(() -> service.addTool(sampleTool));
 
-            verify(repository, times(1)).existById("D-101");
+            verify(repository, times(1)).existsById("D-101");
             verify(repository, times(1)).save(sampleTool);
         }
 
@@ -78,7 +78,7 @@ class ToolMagazineServiceTest {
         @Test
         @DisplayName("Should throw IllegalArgumentException when tool ID already exists")
         void shouldThrowExceptionWhenToolAlreadyExists() {
-            when(repository.existById("D-101")).thenReturn(true);
+            when(repository.existsById("D-101")).thenReturn(true);
 
             IllegalArgumentException exception = assertThrows(
                     IllegalArgumentException.class,
@@ -86,7 +86,7 @@ class ToolMagazineServiceTest {
             );
 
             assertEquals("Tool with ID 'D-101' already exists!", exception.getMessage());
-            verify(repository, times(1)).existById("D-101");
+            verify(repository, times(1)).existsById("D-101");
             verify(repository, never()).save(any());
         }
     }

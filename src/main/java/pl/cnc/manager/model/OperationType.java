@@ -1,4 +1,4 @@
-package pl.cnc.manager.repository;
+package pl.cnc.manager.model;
 
 public enum OperationType {
     PICKUP,

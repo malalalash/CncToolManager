@@ -124,13 +124,13 @@ class JdbcToolRepositoryTest {
     }
 
     @Test
-    @DisplayName("existById() reflects database table")
+    @DisplayName("existsById() reflects database table")
     void shouldReportExistence() {
-        assertFalse(repository.existById("D1"));
+        assertFalse(repository.existsById("D1"));
 
         Drill tool = new Drill("D1", "Drill 8mm", 8.00, 10);
         repository.save(tool);
-        assertTrue(repository.existById("D1"));
+        assertTrue(repository.existsById("D1"));
     }
 
     @Test
@@ -140,7 +140,7 @@ class JdbcToolRepositoryTest {
         repository.save(tool);
 
         assertTrue(repository.deleteById("D1"));
-        assertFalse(repository.existById("D1"));
+        assertFalse(repository.existsById("D1"));
         assertFalse(repository.deleteById("D1"));
     }
 

@@ -20,7 +20,7 @@ public class ToolMagazineService {
         if (tool.getId() == null || tool.getId().isBlank()) {
             throw new IllegalArgumentException("Tool ID cannot be empty.");
         }
-        if (repository.existById(tool.getId())) {
+        if (repository.existsById(tool.getId())) {
             throw new IllegalArgumentException("Tool with ID '" + tool.getId() + "' already exists!");
         }
 

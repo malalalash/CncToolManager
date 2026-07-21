@@ -45,7 +45,7 @@ public class JdbcToolRepository implements ToolRepository {
     }
 
     @Override
-    public boolean existById(String id) {
+    public boolean existsById(String id) {
         String sql = "SELECT 1 FROM tools WHERE id = ?";
         try (Connection conn = dbService.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -132,7 +132,7 @@ public class JdbcToolRepository implements ToolRepository {
             throw new ToolRepositoryException("Cannot update quantity for tool (id=" + id + "): ", e);
         }
     }
-
+    @Override
     public boolean issueTool(String id, int amount) {
         return changeQuantity(id, amount, OperationType.PICKUP);
     }
@@ -142,7 +142,7 @@ public class JdbcToolRepository implements ToolRepository {
         return changeQuantity(id, amount, OperationType.RETURN);
     }
 
-    public boolean changeQuantity(String id, int amount, OperationType operationType) {
+    private boolean changeQuantity(String id, int amount, OperationType operationType) {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("ID cannot be empty");
         }

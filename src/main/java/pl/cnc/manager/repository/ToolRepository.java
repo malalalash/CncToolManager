@@ -1,5 +1,6 @@
 package pl.cnc.manager.repository;
 
+import pl.cnc.manager.model.OperationType;
 import pl.cnc.manager.model.Tool;
 
 import java.util.List;
@@ -8,7 +9,7 @@ public interface ToolRepository {
 
     List<Tool> findAll();
 
-    boolean existById(String id);
+    boolean existsById(String id);
 
     void save(Tool tool);
 
@@ -20,5 +21,4 @@ public interface ToolRepository {
 
     boolean returnTool(String id, int amount);
 
-    boolean changeQuantity(String id, int amount, OperationType type);
 }
