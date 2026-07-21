@@ -49,13 +49,13 @@ public class CncConsoleUi {
     }
 
     private void handleAddTool() {
-        System.out.println("Select tool type:");
-        ToolType[] types = ToolType.values();
-        for (int i = 0; i < types.length; i++) {
-            System.out.println((i + 1) + " - " + types[i]);
-        }
+        runSafely("Add tool", () -> {
+            System.out.println("Select tool type:");
+            ToolType[] types = ToolType.values();
+            for (int i = 0; i < types.length; i++) {
+                System.out.println((i + 1) + " - " + types[i]);
+            }
 
-        try {
             int typeIndex = Integer.parseInt(scanner.nextLine().trim()) - 1;
             if (typeIndex < 0 || typeIndex >= types.length) {
                 System.out.println("Invalid tool type selection.");
@@ -93,62 +93,46 @@ public class CncConsoleUi {
                     yield new Tap(id, name, diameter, pitch, quantity);
                 }
             };
-
             toolService.addTool(newTool);
             System.out.println("Tool successfully added: \n" + newTool + "\n");
-
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number entered. Tool was not added.");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Validation Error: " + e.getMessage());
-        } catch (ToolRepositoryException e) {
-            System.err.println("Database error: Could not add tool: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("An unexpected system error occurred: " + e.getMessage());
-        }
+        });
     }
 
     private void handleRemoveTool() {
-        System.out.println("Provide tool id to remove:");
-        String id = scanner.nextLine().trim();
+        runSafely("Remove tool", () -> {
+            System.out.println("Provide tool id to remove:");
+            String id = scanner.nextLine().trim();
 
-        try {
             boolean removed = toolService.removeTool(id);
             if (removed) {
                 System.out.println("Tool with id: " + id + " has been successfully removed.");
             } else {
                 System.out.println("No tool found with id: " + id);
             }
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        } catch (ToolRepositoryException e) {
-            System.err.println("Database error: Could not remove tool: " + e.getMessage());
-        }
+        });
     }
 
     private void handleListTools() {
-        try {
-            List<Tool> tools = toolService.getAllTools();
-            if (tools.isEmpty()) {
-                System.out.println("\nMagazine is empty.\n");
-            } else {
-                System.out.println("--- INVENTORY ---");
-                for (Tool tool : tools) {
-                    System.out.println(tool + "\n");
+            runSafely("List tool(s)", () -> {
+                List<Tool> tools = toolService.getAllTools();
+                if (tools.isEmpty()) {
+                    System.out.println("\nMagazine is empty.\n");
+                } else {
+                    System.out.println("--- INVENTORY ---");
+                    for (Tool tool : tools) {
+                        System.out.println(tool + "\n");
+                    }
+                    System.out.println("------------------\n");
                 }
-                System.out.println("------------------\n");
-            }
-        } catch (ToolRepositoryException e) {
-            System.out.println("Error reading inventory: " + e.getMessage());
-        }
+            });
     }
 
     private void handleUpdateQuantity() {
-        System.out.println("Provide tool id to update:");
-        String id = scanner.nextLine().trim();
+        runSafely("Update tool", () -> {
+            System.out.println("Provide tool id to update:");
+            String id = scanner.nextLine().trim();
 
-        System.out.println("Provide new quantity:");
-        try {
+            System.out.println("Provide new quantity:");
             int quantity = Integer.parseInt(scanner.nextLine().trim());
 
             boolean updated = toolService.updateQuantity(id, quantity);
@@ -157,22 +141,15 @@ public class CncConsoleUi {
             } else {
                 System.out.println("No tool with id: " + id);
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Wrong quantity provided");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Validation Error: " + e.getMessage());
-        } catch (ToolRepositoryException e) {
-            System.out.println("Database error: Could not update quantity: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("An unexpected system error occurred: " + e.getMessage());
-        }
+        });
     }
-    private void handleIssueTool() {
-        System.out.println("Provide tool id to issue:");
-        String id = scanner.nextLine().trim();
 
-        System.out.println("Provide quantity to issue:");
-        try {
+    private void handleIssueTool() {
+        runSafely("issue/return tool", () -> {
+            System.out.println("Provide tool id to issue:");
+            String id = scanner.nextLine().trim();
+
+            System.out.println("Provide quantity to issue:");
             int amount = Integer.parseInt(scanner.nextLine().trim());
             boolean issued = toolService.issueTool(id, amount);
             if (issued) {
@@ -180,14 +157,18 @@ public class CncConsoleUi {
             } else {
                 System.out.println("No tool with id: " + id);
             }
+        });
+    }
+
+    private void runSafely(String actionLabel, Runnable action) {
+        try {
+            action.run();
         } catch (NumberFormatException e) {
-            System.out.println("Wrong amount provided");
+            System.out.println("Invalid number entered. " + actionLabel + " aborted.");
         } catch (IllegalArgumentException e) {
             System.out.println("Validation error: " + e.getMessage());
         } catch (ToolRepositoryException e) {
-            System.out.println("Database error: Could not issue tool: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("An unexpected system error occurred: " + e.getMessage());
+            System.err.println("Database error: " + e.getMessage());
         }
     }
 }
