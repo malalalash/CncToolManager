@@ -2,7 +2,7 @@ package pl.cnc.manager.model;
 
 import java.util.Locale;
 
-public class Tap extends Tool {
+public final class Tap extends Tool {
     private final double pitch;
 
     public Tap(String id, String name, double diameter, double pitch, int quantity) {

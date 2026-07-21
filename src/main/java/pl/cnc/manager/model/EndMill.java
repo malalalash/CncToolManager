@@ -2,7 +2,7 @@ package pl.cnc.manager.model;
 
 import java.util.Locale;
 
-public class EndMill extends Tool {
+public final class EndMill extends Tool {
     private final int flutes;
 
     public EndMill(String id, String name, double diameter, int flutes, int quantity) {

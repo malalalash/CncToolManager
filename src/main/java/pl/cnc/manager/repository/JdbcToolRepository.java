@@ -98,7 +98,6 @@ public class JdbcToolRepository implements ToolRepository {
                     pstmt.setNull(7, Types.INTEGER);
                     pstmt.setDouble(8, tap.getPitch());
                 }
-                default -> throw new IllegalArgumentException("Unexpected value: " + tool);
             }
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -181,7 +180,6 @@ public class JdbcToolRepository implements ToolRepository {
                     insert.setString(3, operationType.name());
                     insert.executeUpdate();
                 }
-
                 conn.commit();
                 return true;
             } catch (SQLException e) {

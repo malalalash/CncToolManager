@@ -3,7 +3,7 @@ package pl.cnc.manager.model;
 import java.util.Locale;
 import java.util.Objects;
 
-public abstract class Tool implements Comparable<Tool> {
+public sealed abstract class Tool implements Comparable<Tool> permits Drill, EndMill, FaceMill, Tap {
     private final ToolType type;
     private final String id;
     private final String name;

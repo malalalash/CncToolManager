@@ -2,7 +2,7 @@ package pl.cnc.manager.model;
 
 import java.util.Locale;
 
-public class FaceMill extends Tool {
+public final class FaceMill extends Tool {
     private final int inserts;
 
     public FaceMill(String id, String name, double diameter, int inserts, int quantity) {
