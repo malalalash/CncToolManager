@@ -25,7 +25,7 @@ public class MainApp {
                 System.out.println("Connected to database!");
             }
         } catch (SQLException e) {
-            System.err.println("Cannot connect to database: " + e.getMessage());
+            System.err.println("Cannot connect to database!");
             return;
         }
 
