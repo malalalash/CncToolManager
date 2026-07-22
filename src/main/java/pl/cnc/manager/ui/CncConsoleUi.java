@@ -168,7 +168,6 @@ public class CncConsoleUi {
             System.out.printf("Provide tool id to %s: ", operation);
             String id = scanner.nextLine().trim();
 
-            System.out.printf("\nProvide quantity to %s: ", operation);
             int amount = readIntInput(String.format("Provide quantity to %s: ", operation));
 
             boolean success = toolService.issueReturnTool(id, amount, type);
