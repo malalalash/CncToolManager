@@ -35,6 +35,8 @@ public class MainApp {
         try (Scanner scanner = new Scanner(System.in)) {
             CncConsoleUi ui = new CncConsoleUi(toolService, scanner);
             ui.start();
+        } finally {
+            dbService.close();
         }
     }
 }
