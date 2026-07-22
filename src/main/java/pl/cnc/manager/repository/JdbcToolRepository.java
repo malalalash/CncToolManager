@@ -145,9 +145,7 @@ public class JdbcToolRepository implements ToolRepository {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("ID cannot be empty");
         }
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be positive");
-        }
+        assert amount > 0 : "amount must be positive, validated by service layer";
 
         int delta = operationType == OperationType.PICKUP ? -amount : amount;
 

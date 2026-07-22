@@ -52,7 +52,7 @@ public class ToolMagazineService {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("Tool ID cannot be empty.");
         }
-        if (amount < 0) {
+        if (amount <= 0) {
             throw new IllegalArgumentException("Amount must be positive.");
         }
         return type == OperationType.PICKUP ? repository.issueTool(id, amount) : repository.returnTool(id, amount);

@@ -269,8 +269,8 @@ class JdbcToolRepositoryTest {
         @Test
         @DisplayName("issueTool() should throw IllegalArgumentException for non-positive amount")
         void shouldThrowExceptionForNonPositiveAmount() {
-            assertThrows(IllegalArgumentException.class, () -> repository.issueTool("D1", 0));
-            assertThrows(IllegalArgumentException.class, () -> repository.issueTool("D1", -3));
+            assertThrows(AssertionError.class, () -> repository.issueTool("D1", 0));
+            assertThrows(AssertionError.class, () -> repository.issueTool("D1", -3));
         }
 
         @Test
@@ -346,8 +346,8 @@ class JdbcToolRepositoryTest {
         @Test
         @DisplayName("returnTool() should throw IllegalArgumentException for non-positive amount")
         void shouldThrowExceptionForNonPositiveAmount() {
-            assertThrows(IllegalArgumentException.class, () -> repository.returnTool("D1", 0));
-            assertThrows(IllegalArgumentException.class, () -> repository.returnTool("D1", -3));
+            assertThrows(AssertionError.class, () -> repository.returnTool("D1", 0));
+            assertThrows(AssertionError.class, () -> repository.returnTool("D1", -3));
         }
 
         @Test

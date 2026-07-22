@@ -135,8 +135,7 @@ public class CncConsoleUi {
             System.out.println("Provide tool id to update:");
             String id = scanner.nextLine().trim();
 
-            System.out.println("Provide new quantity:");
-            int quantity = Integer.parseInt(scanner.nextLine().trim());
+            int quantity = readIntInput("Provide new quantity:");
 
             boolean updated = toolService.updateQuantity(id, quantity);
             if (updated) {
@@ -167,7 +166,7 @@ public class CncConsoleUi {
                         }
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("Please select '1' or '2' to issue/return tool or '0' to exitS");
+                    System.out.println("Please select '1' or '2' to issue/return tool or '0' to exit");
                 }
             }
             String operation = type == PICKUP ? "issue" : "return";
