@@ -291,11 +291,77 @@ class JdbcToolRepositoryTest {
             Tool drill = new Drill("D1", "Drill", 10.00, 5);
             repository.save(drill);
 
-            String sql = "INSERT INTO tool_issues (tool_id, amount) VALUES (?, ?)";
+            String sql = "INSERT INTO tool_issues (tool_id, amount, operation_type) VALUES (?, ?, ?)";
             try (Connection conn = dbService.connect();
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, "D1");
                 pstmt.setInt(2, -3);
+                pstmt.setString(3, "PICKUP");
+
+                assertThrows(SQLException.class, pstmt::executeUpdate);
+            }
+        }
+    }
+    @Nested
+    @DisplayName("Tests for returnTool")
+    class ReturnToolTests {
+        @Test
+        @DisplayName("returnTool() test should return correct amount")
+        void shouldIssueCorrectAmount() {
+            Tool drill = new Drill("D1", "Drill", 2.00, 5);
+            repository.save(drill);
+            assertTrue(repository.returnTool("D1", 1));
+            Tool updatedTool = repository.findAll().getFirst();
+            assertEquals(6, updatedTool.getQuantity());
+        }
+
+        @Test
+        @DisplayName("returnTool() should return false when tool does not exist")
+        void shouldReturnFalseWhenToolDoesNotExist() {
+            assertFalse(repository.returnTool("D1", 6));
+        }
+
+        @Test
+        @DisplayName("returnTool() should create a log entry in tool_issues")
+        void shouldCreateIssueLogEntry() throws SQLException {
+            Tool drill = new Drill("D1", "Drill", 2.00, 5);
+            repository.save(drill);
+
+            repository.returnTool("D1", 2);
+
+            try (Connection conn = dbService.connect();
+                 PreparedStatement stmt = conn.prepareStatement(
+                         "SELECT amount, issued_at, operation_type FROM tool_issues WHERE tool_id = ?")) {
+                stmt.setString(1, "D1");
+                try (ResultSet rs = stmt.executeQuery()) {
+                    assertTrue(rs.next());
+                    assertEquals(2, rs.getInt("amount"));
+                    assertNotNull(rs.getTimestamp("issued_at"));
+                    assertEquals("RETURN", rs.getString("operation_type"));
+                    assertFalse(rs.next());
+                }
+            }
+        }
+
+        @Test
+        @DisplayName("returnTool() should throw IllegalArgumentException for non-positive amount")
+        void shouldThrowExceptionForNonPositiveAmount() {
+            assertThrows(IllegalArgumentException.class, () -> repository.returnTool("D1", 0));
+            assertThrows(IllegalArgumentException.class, () -> repository.returnTool("D1", -3));
+        }
+
+        @Test
+        @DisplayName("checks CONSTRAINT CHECK (amount > 0) at the database level")
+        void shouldEnforceNonPositiveAmountAtDatabase() throws SQLException {
+            Tool drill = new Drill("D1", "Drill", 10.00, 5);
+            repository.save(drill);
+
+            String sql = "INSERT INTO tool_issues (tool_id, amount, operation_type) VALUES (?, ?, ?)";
+            try (Connection conn = dbService.connect();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, "D1");
+                pstmt.setInt(2, -3);
+                pstmt.setString(3, "RETURN");
 
                 assertThrows(SQLException.class, pstmt::executeUpdate);
             }

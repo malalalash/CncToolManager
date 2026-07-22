@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.cnc.manager.model.Drill;
+import pl.cnc.manager.model.OperationType;
 import pl.cnc.manager.model.Tool;
 import pl.cnc.manager.repository.ToolRepository;
 
@@ -166,12 +167,14 @@ class ToolMagazineServiceTest {
         @Test
         @DisplayName("Should return true when quantity is successfully updated")
         void shouldReturnTrueOnSuccessfulUpdate() {
-            when(repository.updateQuantity("D-101", 20)).thenReturn(true);
+            String id = "D-101";
+            int quantity = 20;
+            when(repository.updateQuantity(id, quantity)).thenReturn(true);
 
-            boolean result = service.updateQuantity("D-101", 20);
+            boolean result = service.updateQuantity(id, quantity);
 
             assertTrue(result);
-            verify(repository, times(1)).updateQuantity("D-101", 20);
+            verify(repository, times(1)).updateQuantity(id, quantity);
         }
 
         @Test
@@ -208,5 +211,61 @@ class ToolMagazineServiceTest {
             assertEquals("Quantity cannot be negative.", exception.getMessage());
             verifyNoInteractions(repository);
         }
+    }
+
+    @Nested
+    @DisplayName("Tests for issueReturnTool")
+    class IssueReturnToolTests {
+        @Test
+        @DisplayName("Should return true when tool was successfully issued")
+        void shouldReturnTrueOnSuccessfulIssue (){
+            String toolId = "D1";
+            int amount = 5;
+            when(repository.issueTool(toolId, amount)).thenReturn(true);
+
+            boolean result = service.issueReturnTool(toolId, amount, OperationType.PICKUP);
+
+            assertTrue(result);
+            verify(repository, times(1)).issueTool(toolId, amount);
+            verify(repository, never()).returnTool(anyString(), anyInt());
+        }
+
+        @Test
+        @DisplayName("Should return true when tool was successfully returned")
+        void shouldReturnTrueOnSuccessfulReturn (){
+            String toolId = "D1";
+            int amount = 3;
+            when(repository.returnTool(toolId, amount)).thenReturn(true);
+
+            boolean result = service.issueReturnTool(toolId, amount, OperationType.RETURN);
+
+            assertTrue(result);
+            verify(repository, times(1)).returnTool(toolId, amount);
+            verify(repository, never()).issueTool(anyString(), anyInt());
+        }
+        @Test
+        @DisplayName("Should throw IllegalArgumentException when ID is blank")
+        void shouldThrowExceptionWhenIdIsBlank() {
+            IllegalArgumentException exception = assertThrows(
+                    IllegalArgumentException.class,
+                    () -> service.issueReturnTool("  ", 20, OperationType.PICKUP)
+            );
+
+            assertEquals("Tool ID cannot be empty.", exception.getMessage());
+            verifyNoInteractions(repository);
+        }
+
+        @Test
+        @DisplayName("Should throw IllegalArgumentException when quantity is negative")
+        void shouldThrowExceptionWhenQuantityIsNegative() {
+            IllegalArgumentException exception = assertThrows(
+                    IllegalArgumentException.class,
+                    () -> service.issueReturnTool("D-101", -1, OperationType.RETURN)
+            );
+
+            assertEquals("Amount must be positive.", exception.getMessage());
+            verifyNoInteractions(repository);
+        }
+
     }
 }

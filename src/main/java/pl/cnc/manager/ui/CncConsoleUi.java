@@ -7,6 +7,9 @@ import pl.cnc.manager.service.ToolMagazineService;
 import java.util.List;
 import java.util.Scanner;
 
+import static pl.cnc.manager.model.OperationType.PICKUP;
+import static pl.cnc.manager.model.OperationType.RETURN;
+
 public class CncConsoleUi {
 
     private final ToolMagazineService toolService;
@@ -28,7 +31,7 @@ public class CncConsoleUi {
                 case "2" -> handleRemoveTool();
                 case "3" -> handleListTools();
                 case "4" -> handleUpdateQuantity();
-                case "5" -> handleIssueTool();
+                case "5" -> handleIssueReturnTool();
                 case "0" -> {
                     System.out.println("GOODBYE!");
                     running = false;
@@ -44,7 +47,7 @@ public class CncConsoleUi {
         System.out.println("'2' to delete tool");
         System.out.println("'3' to view all tools in magazine");
         System.out.println("'4' to update quantity");
-        System.out.println("'5' to issue tool");
+        System.out.println("'5' to issue/return tool");
         System.out.println("'0' to exit\n");
     }
 
@@ -144,18 +147,42 @@ public class CncConsoleUi {
         });
     }
 
-    private void handleIssueTool() {
+    private void handleIssueReturnTool() {
         runSafely("issue/return tool", () -> {
-            System.out.println("Provide tool id to issue:");
+
+            System.out.println("SELECT OPTION:\n1: Issue Tool\n2: Return tool\n0: Exit");
+            OperationType type = null;
+            while (type == null) {
+                try {
+                    int selectedOption = Integer.parseInt(scanner.nextLine().trim());
+                    switch (selectedOption) {
+                        case 1 -> {
+                            type = PICKUP;
+                        }
+                        case 2 -> {
+                            type = RETURN;
+                        }
+                        case 0 -> {
+                            return;
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Please select '1' or '2' to issue/return tool or '0' to exitS");
+                }
+            }
+            String operation = type == PICKUP ? "issue" : "return";
+
+            System.out.printf("Provide tool id to %s: ", operation);
             String id = scanner.nextLine().trim();
 
-            System.out.println("Provide quantity to issue:");
-            int amount = Integer.parseInt(scanner.nextLine().trim());
-            boolean issued = toolService.issueTool(id, amount);
-            if (issued) {
-                System.out.println("Tool with id: " + id + " has been issued with amount of: " + amount);
+            System.out.printf("\nProvide quantity to %s: ", operation);
+            int amount = readIntInput(String.format("Provide quantity to %s: ", operation));
+
+            boolean success = toolService.issueReturnTool(id, amount, type);
+            if (success) {
+                System.out.printf("Successfully %s tool!\n", (type == PICKUP ? "issued" : "returned"));
             } else {
-                System.out.println("No tool with id: " + id);
+                System.out.println("Failed! No tool with id: " + id);
             }
         });
     }
@@ -169,6 +196,17 @@ public class CncConsoleUi {
             System.out.println("Validation error: " + e.getMessage());
         } catch (ToolRepositoryException e) {
             System.err.println("Database error: " + e.getMessage());
+        }
+    }
+
+    private int readIntInput(String input) {
+        while (true) {
+            System.out.println(input);
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Please provide valid integer!");
+            }
         }
     }
 }

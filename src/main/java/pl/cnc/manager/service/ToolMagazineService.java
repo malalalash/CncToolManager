@@ -48,13 +48,13 @@ public class ToolMagazineService {
         return repository.updateQuantity(id, quantity);
     }
 
-    public boolean issueTool(String id, int amount) {
+    public boolean issueReturnTool(String id, int amount, OperationType type) {
         if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("Tool id cannot be empty.");
+            throw new IllegalArgumentException("Tool ID cannot be empty.");
         }
         if (amount < 0) {
             throw new IllegalArgumentException("Amount must be positive.");
         }
-        return repository.issueTool(id, amount);
+        return type == OperationType.PICKUP ? repository.issueTool(id, amount) : repository.returnTool(id, amount);
     }
 }
