@@ -194,7 +194,7 @@ public class CncConsoleUi {
         } catch (IllegalArgumentException e) {
             System.out.println("Validation error: " + e.getMessage());
         } catch (ToolRepositoryException e) {
-            System.err.println("Database error: " + e.getMessage());
+            System.err.println("Database error, Try again!");
         }
     }
 
