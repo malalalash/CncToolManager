@@ -53,13 +53,12 @@ public class CncConsoleUi {
 
     private void handleAddTool() {
         runSafely("Add tool", () -> {
-            System.out.println("Select tool type:");
+            System.out.println();
             ToolType[] types = ToolType.values();
             for (int i = 0; i < types.length; i++) {
                 System.out.println((i + 1) + " - " + types[i]);
             }
-
-            int typeIndex = Integer.parseInt(scanner.nextLine().trim()) - 1;
+            int typeIndex = readIntInput("Select tool type:") - 1;
             if (typeIndex < 0 || typeIndex >= types.length) {
                 System.out.println("Invalid tool type selection.");
                 return;
@@ -72,27 +71,22 @@ public class CncConsoleUi {
             System.out.println("Provide name:");
             String name = scanner.nextLine().trim();
 
-            System.out.println("Provide diameter:");
-            double diameter = Double.parseDouble(scanner.nextLine().trim());
+            double diameter = readDoubleInput("Provide diameter:");
 
-            System.out.println("Provide quantity:");
-            int quantity = Integer.parseInt(scanner.nextLine().trim());
+            int quantity = readIntInput("Provide quantity:");
 
             Tool newTool = switch (selectedType) {
                 case DRILL -> new Drill(id, name, diameter, quantity);
                 case END_MILL -> {
-                    System.out.println("Provide number of flutes:");
-                    int flutes = Integer.parseInt(scanner.nextLine().trim());
+                    int flutes = readIntInput("Provide number of flutes:");
                     yield new EndMill(id, name, diameter, flutes, quantity);
                 }
                 case FACE_MILL -> {
-                    System.out.println("Provide number of inserts:");
-                    int inserts = Integer.parseInt(scanner.nextLine().trim());
+                    int inserts = readIntInput("Provide number of inserts:");
                     yield new FaceMill(id, name, diameter, inserts, quantity);
                 }
                 case TAP -> {
-                    System.out.println("Provide pitch of a TAP:");
-                    double pitch = Double.parseDouble(scanner.nextLine().trim());
+                    double pitch = readDoubleInput("Provide pitch of a TAP:");
                     yield new Tap(id, name, diameter, pitch, quantity);
                 }
             };
@@ -205,6 +199,17 @@ public class CncConsoleUi {
                 return Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
                 System.out.println("Please provide valid integer!");
+            }
+        }
+    }
+
+    private double readDoubleInput(String input) {
+        while (true) {
+            System.out.println(input);
+            try {
+                return Double.parseDouble(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Please provide valid double!");
             }
         }
     }

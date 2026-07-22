@@ -35,11 +35,7 @@ public class MainApp {
         try (Scanner scanner = new Scanner(System.in)) {
             CncConsoleUi ui = new CncConsoleUi(toolService, scanner);
             ui.start();
-        } catch (ToolRepositoryException e) {
-            System.err.println("Database error: " + e.getMessage());
-            System.exit(1);
         }
     }
 }
-
 
