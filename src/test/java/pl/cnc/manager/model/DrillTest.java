@@ -18,6 +18,26 @@ class DrillTest {
     }
 
     @Test
+    void shouldThrowExceptionWhenIdIsBlank() {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> new Drill("  ", "drill", 10.0, 10)
+        );
+
+        assertEquals("ID cannot be empty.", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNameIsBlank() {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> new Drill("D1", " ", 10.0, 10)
+        );
+
+        assertEquals("Name cannot be empty.", exception.getMessage());
+    }
+
+    @Test
     void shouldThrowExceptionWhenQuantityIsNegative() {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
