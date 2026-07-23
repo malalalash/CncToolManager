@@ -20,5 +20,5 @@ public interface ToolRepository {
     boolean issueTool(String id, int amount);
 
     boolean returnTool(String id, int amount);
-
+    
 }
