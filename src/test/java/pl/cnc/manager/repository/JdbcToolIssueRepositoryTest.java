@@ -74,10 +74,11 @@ class JdbcToolIssueRepositoryTest {
 
     @Test
     @DisplayName("findIssueHistory() should order by issued_at descending")
-    void shouldOrderByIssuedAtDesc () {
+    void shouldOrderByIssuedAtDesc () throws InterruptedException {
         Tool drill = new Drill("D2", "Drill 8mm", 8.00, 5);
         toolRepository.save(drill);
         toolRepository.issueTool("D2", 1);
+        Thread.sleep(10);
         toolRepository.returnTool("D2",1);
 
         List<ToolIssue> history = issueRepository.findIssueHistory();
