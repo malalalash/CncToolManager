@@ -1,5 +1,6 @@
 package pl.cnc.manager.model;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -8,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TapTest {
     @Test
+    @DisplayName("Should correctly create Tap object")
     void shouldCreateTapCorrectly() {
         Tap tap = new Tap("T-01", "M10", 10.0, 1.5, 3);
 
@@ -22,6 +24,7 @@ class TapTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Should throw IllegalArgumentException for invalid diameter value")
     @ValueSource(ints = {0, -1, -3})
     void shouldThrowExceptionForInvalidDiameter(int diameter) {
         IllegalArgumentException exception = assertThrows(
@@ -32,6 +35,7 @@ class TapTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Should throw IllegalArgumentException for invalid pitch value")
     @ValueSource(doubles = {0.0, -5.0, -2.25})
     void shouldThrowExceptionForInvalidPitch(double pitch) {
         IllegalArgumentException exception = assertThrows(
@@ -42,6 +46,7 @@ class TapTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Should throw IllegalArgumentException for invalid quantity value")
     @ValueSource(ints = {-1, -5, -100})
     void shouldThrowExceptionForInvalidQuantity(int quantity) {
         IllegalArgumentException exception = assertThrows(
@@ -52,6 +57,7 @@ class TapTest {
     }
 
     @Test
+    @DisplayName("Should throw IllegalArgumentException when setting negative quantity")
     void shouldThrowExceptionWhenSettingNegativeQuantity() {
         Tap tap = new Tap("T-01", "M10", 10.0, 1.5, 3);
         IllegalArgumentException exception = assertThrows(
@@ -63,6 +69,7 @@ class TapTest {
     }
 
     @Test
+    @DisplayName("Should print correct string")
     void shouldReturnCorrectToString() {
         Tap tap = new Tap("T-01", "M10", 10.0, 1.5, 2);
 

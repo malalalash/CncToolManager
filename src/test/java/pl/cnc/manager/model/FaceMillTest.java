@@ -1,5 +1,6 @@
 package pl.cnc.manager.model;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -8,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FaceMillTest {
     @Test
+    @DisplayName("Should correctly create FaceMill object")
     void shouldCreateFaceMillCorrectly() {
         FaceMill faceMill = new FaceMill("FM1", "FaceMill 40mm", 40, 6, 2);
 
@@ -22,6 +24,7 @@ class FaceMillTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Should throw IllegalArgumentException for invalid inserts value")
     @ValueSource(ints = {0, -1, -5})
     void shouldThrowExceptionForInvalidInserts(int inserts) {
         assertThrows(
@@ -31,6 +34,7 @@ class FaceMillTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Should throw IllegalArgumentException for invalid diameter value")
     @ValueSource(ints = {0, -1, -5})
     void shouldThrowExceptionForInvalidDiameter(int diameter) {
         assertThrows(
@@ -40,6 +44,7 @@ class FaceMillTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Should throw IllegalArgumentException for invalid quantity value")
     @ValueSource(ints = {-100, -1, -5})
     void shouldThrowExceptionForInvalidQuantity(int quantity) {
         assertThrows(
@@ -49,6 +54,7 @@ class FaceMillTest {
     }
 
     @Test
+    @DisplayName("Should set quantity properly")
     void shouldSetQuantity() {
         FaceMill faceMill = new FaceMill("FM1", "FaceMill 40mm", 40, 6, 2);
 
@@ -58,6 +64,7 @@ class FaceMillTest {
     }
 
     @Test
+    @DisplayName("Should throw IllegalArgumentException when setting negative quantity")
     void shouldThrowExceptionWhenSettingNegativeQuantity() {
         FaceMill faceMill = new FaceMill("FM1", "FaceMill 40mm", 40, 6, 2);
 
@@ -70,6 +77,7 @@ class FaceMillTest {
     }
 
     @Test
+    @DisplayName("Should print correct string")
     void shouldReturnCorrectToString() {
         FaceMill faceMill = new FaceMill("FM1", "FaceMill 40mm", 40, 6, 2);
 

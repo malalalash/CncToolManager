@@ -1,5 +1,6 @@
 package pl.cnc.manager.model;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -8,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EndMillTest {
     @Test
+    @DisplayName("Should correctly create EndMill object")
     void shouldCreateEndMillCorrectly() {
         EndMill mill = new EndMill("EM-1", "End Mill 4", 4, 3, 1);
 
@@ -22,6 +24,7 @@ class EndMillTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Should throw IllegalArgumentException for invalid flutes value")
     @ValueSource(ints = {0, -1, -5, -100})
     void shouldThrowExceptionForInvalidFlutes(int flutes) {
         assertThrows(
@@ -31,6 +34,7 @@ class EndMillTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Should throw IllegalArgumentException for invalid diameter value")
     @ValueSource(ints = {0, -1, -5, -100})
     void shouldThrowExceptionForInvalidDiameters(int diameter) {
         assertThrows(
@@ -40,6 +44,7 @@ class EndMillTest {
     }
 
     @ParameterizedTest
+    @DisplayName("Should throw IllegalArgumentException for invalid quantity value")
     @ValueSource(ints = {-1, -5, -100})
     void shouldThrowExceptionForInvalidQuantity(int quantity) {
         assertThrows(
@@ -49,6 +54,7 @@ class EndMillTest {
     }
 
     @Test
+    @DisplayName("Should set quantity properly")
     void shouldSetQuantity() {
         EndMill mill = new EndMill("E001", "End Mill", 10.0, 4, 5);
 
@@ -58,6 +64,7 @@ class EndMillTest {
     }
 
     @Test
+    @DisplayName("Should throw IllegalArgumentException when setting negative quantity")
     void shouldThrowExceptionWhenSettingNegativeQuantity() {
         EndMill mill = new EndMill("E001", "End Mill", 10.0, 4, 5);
 
@@ -70,6 +77,7 @@ class EndMillTest {
     }
 
     @Test
+    @DisplayName("Should print correct string")
     void shouldReturnCorrectToString() {
         EndMill mill = new EndMill("E001", "Carbide End Mill", 12.0, 4, 10);
 
