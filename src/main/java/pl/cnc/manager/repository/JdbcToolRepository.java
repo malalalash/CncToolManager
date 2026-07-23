@@ -185,6 +185,8 @@ public class JdbcToolRepository implements ToolRepository {
             } catch (SQLException e) {
                 conn.rollback();
                 throw e;
+            } finally {
+                conn.setAutoCommit(true);
             }
         } catch (SQLException e) {
             throw new ToolRepositoryException(
