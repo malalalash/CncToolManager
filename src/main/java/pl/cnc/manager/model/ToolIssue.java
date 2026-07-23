@@ -37,7 +37,7 @@ public record ToolIssue(
     @Override
     public String toString() {
         String type = operationType == OperationType.PICKUP ? "issued" : "returned";
-        String dateText = issuedAt.format(DateTimeFormatter.ofPattern("dd-MM-yyy HH:mm"));
+        String dateText = issuedAt.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
         return String.format(Locale.ENGLISH,
                 "[%s] %s: %d x %s (%s, id: %s)",
                 dateText, type, amount, toolName, toolType, toolId);
