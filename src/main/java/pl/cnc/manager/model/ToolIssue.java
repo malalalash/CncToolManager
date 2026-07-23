@@ -1,9 +1,11 @@
 package pl.cnc.manager.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public record ToolIssue(
-        long id,
+        String id,
         String toolId,
         String toolName,
         ToolType toolType,
@@ -30,5 +32,14 @@ public record ToolIssue(
         if (issuedAt == null) {
             throw new IllegalArgumentException("Issued date cannot be null.");
         }
+    }
+
+    @Override
+    public String toString() {
+        String type = operationType == OperationType.PICKUP ? "issued" : "returned";
+        String dateText = issuedAt.format(DateTimeFormatter.ofPattern("dd-MM-yyy HH:mm"));
+        return String.format(Locale.ENGLISH,
+                "[%s] %s: %d x %s (%s, id: %s)",
+                dateText, type, amount, toolName, toolType, toolId);
     }
 }

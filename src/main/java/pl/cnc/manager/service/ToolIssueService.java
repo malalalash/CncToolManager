@@ -14,7 +14,7 @@ public class ToolIssueService {
         this.repository = repository;
     }
 
-    public List<ToolIssue> getHistory() {
+    public List<ToolIssue> getIssueHistory() {
         return repository.findIssueHistory();
     }
 }

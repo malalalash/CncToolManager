@@ -2,6 +2,7 @@ package pl.cnc.manager.ui;
 
 import pl.cnc.manager.model.*;
 import pl.cnc.manager.repository.ToolRepositoryException;
+import pl.cnc.manager.service.ToolIssueService;
 import pl.cnc.manager.service.ToolMagazineService;
 
 import java.util.List;
@@ -13,10 +14,12 @@ import static pl.cnc.manager.model.OperationType.RETURN;
 public class CncConsoleUi {
 
     private final ToolMagazineService toolService;
+    private final ToolIssueService toolIssueService;
     private final Scanner scanner;
 
-    public CncConsoleUi(ToolMagazineService toolService, Scanner scanner) {
+    public CncConsoleUi(ToolMagazineService toolService, ToolIssueService toolIssueService, Scanner scanner) {
         this.toolService = toolService;
+        this.toolIssueService = toolIssueService;
         this.scanner = scanner;
     }
 
@@ -32,6 +35,7 @@ public class CncConsoleUi {
                 case "3" -> handleListTools();
                 case "4" -> handleUpdateQuantity();
                 case "5" -> handleIssueReturnTool();
+                case "9" -> handleToolHistory();
                 case "0" -> {
                     System.out.println("GOODBYE!");
                     running = false;
@@ -48,6 +52,7 @@ public class CncConsoleUi {
         System.out.println("'3' to view all tools in magazine");
         System.out.println("'4' to update quantity");
         System.out.println("'5' to issue/return tool");
+        System.out.println("'9' to view magazine history");
         System.out.println("'0' to exit\n");
     }
 
@@ -175,6 +180,21 @@ public class CncConsoleUi {
                 System.out.printf("Successfully %s tool!\n", (type == PICKUP ? "issued" : "returned"));
             } else {
                 System.out.println("Failed! No tool with id: " + id);
+            }
+        });
+    }
+
+    private void handleToolHistory() {
+        runSafely("History of tools", () -> {
+            List<ToolIssue> history = toolIssueService.getIssueHistory();
+            if (history.isEmpty()) {
+                System.out.println("\nMagazine is empty.\n");
+            } else {
+                System.out.println("--- INVENTORY ---");
+                for (ToolIssue toolHistory : history) {
+                    System.out.println(toolHistory + "\n");
+                }
+                System.out.println("------------------\n");
             }
         });
     }

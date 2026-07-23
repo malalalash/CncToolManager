@@ -1,12 +1,14 @@
 package pl.cnc.manager;
 
+import pl.cnc.manager.repository.JdbcToolIssueRepository;
 import pl.cnc.manager.repository.JdbcToolRepository;
+import pl.cnc.manager.repository.ToolIssueRepository;
 import pl.cnc.manager.repository.ToolRepository;
 import pl.cnc.manager.service.DatabaseConnectionService;
+import pl.cnc.manager.service.ToolIssueService;
 import pl.cnc.manager.service.ToolMagazineService;
 import pl.cnc.manager.ui.CncConsoleUi;
 
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -37,8 +39,11 @@ public class MainApp {
         ToolRepository repository = new JdbcToolRepository(dbService);
         ToolMagazineService toolService = new ToolMagazineService(repository);
 
+        ToolIssueRepository toolIssueRepository = new JdbcToolIssueRepository(dbService);
+        ToolIssueService toolIssueService = new ToolIssueService(toolIssueRepository);
+
         try (Scanner scanner = new Scanner(System.in)) {
-            CncConsoleUi ui = new CncConsoleUi(toolService, scanner);
+            CncConsoleUi ui = new CncConsoleUi(toolService,toolIssueService, scanner);
             ui.start();
         } finally {
             dbService.close();
