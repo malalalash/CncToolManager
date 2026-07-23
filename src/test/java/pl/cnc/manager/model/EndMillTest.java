@@ -39,7 +39,7 @@ class EndMillTest {
     void shouldThrowExceptionForInvalidDiameters(int diameter) {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new EndMill("E1", "End Mill", 10.0, diameter, 5)
+                () -> new EndMill("E1", "End Mill", diameter, 3, 5)
         );
     }
 
