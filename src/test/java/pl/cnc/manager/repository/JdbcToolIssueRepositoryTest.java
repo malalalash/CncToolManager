@@ -41,7 +41,7 @@ class JdbcToolIssueRepositoryTest {
     void cleanTable() throws SQLException {
         try (Connection conn = dbService.connect();
              Statement stmt = conn.createStatement()) {
-            stmt.execute("TRUNCATE TABLE tool_issues CASCADE");
+            stmt.execute("TRUNCATE TABLE tool_issues, tools CASCADE");
         }
         issueRepository = new JdbcToolIssueRepository(dbService);
         toolRepository = new JdbcToolRepository(dbService);
