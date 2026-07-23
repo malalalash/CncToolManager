@@ -20,8 +20,9 @@ public class MainApp {
         String user = System.getenv("DB_USER");
         String password = System.getenv("DB_PASSWORD");
 
-        if (url.isBlank() || user.isBlank() || password.isBlank()) {
-            System.out.println("Database configuration is missing.");
+        if (isBlank(url)|| isBlank(user)|| isBlank(password)) {
+            System.out.println("Database configuration is missing." +
+                    " Set DB_URL, DB_USER, DB_PASSWORD environment variables.");
             return;
         }
 
@@ -48,6 +49,9 @@ public class MainApp {
         } finally {
             dbService.close();
         }
+    }
+    private static boolean isBlank(String value) {
+        return value == null || value.isBlank();
     }
 }
 
