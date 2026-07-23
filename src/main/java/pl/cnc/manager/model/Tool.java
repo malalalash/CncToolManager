@@ -11,17 +11,24 @@ public sealed abstract class Tool implements Comparable<Tool> permits Drill, End
     private final double diameter;
 
     public Tool(ToolType type, String id, String name, double diameter, int quantity) {
-        this.type = type;
-        this.id = id;
-        this.name = name;
-        if (quantity < 0) {
-            throw new IllegalArgumentException("Quantity cannot be negative");
+        if (id == null || id.isBlank()) {
+            throw new IllegalArgumentException("ID cannot be empty.");
         }
-        this.quantity = quantity;
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be empty.");
+        }
         if (diameter <= 0) {
             throw new IllegalArgumentException("Diameter must be greater than 0");
         }
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
+
+        this.type = type;
+        this.id = id;
+        this.name = name;
         this.diameter = diameter;
+        this.quantity = quantity;
     }
 
     protected abstract String getExtraDetails();
