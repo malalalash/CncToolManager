@@ -190,7 +190,7 @@ public class CncConsoleUi {
             if (history.isEmpty()) {
                 System.out.println("\nMagazine is empty.\n");
             } else {
-                System.out.println("--- INVENTORY ---");
+                System.out.println("--- MAGAZINE HISTORY ---");
                 for (ToolIssue toolHistory : history) {
                     System.out.println(toolHistory + "\n");
                 }
