@@ -43,3 +43,6 @@ INSERT INTO tool_types (type, description) VALUES
         ('FACE_MILL', 'Face mill cutter'),
         ('TAP', 'Thread tap')
     ON CONFLICT (type) DO NOTHING;
+
+CREATE INDEX idx_tool_issues_tool_id ON tool_issues(tool_id);
+CREATE INDEX idx_tool_issues_issued_at ON tool_issues(issued_at DESC);

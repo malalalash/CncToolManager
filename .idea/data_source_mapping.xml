@@ -3,6 +3,7 @@
   <component name="DataSourcePerFileMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/18f332e4-de63-4fa9-9a56-e352d5b3764a/console.sql" value="18f332e4-de63-4fa9-9a56-e352d5b3764a" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/18f332e4-de63-4fa9-9a56-e352d5b3764a/console_1.sql" value="18f332e4-de63-4fa9-9a56-e352d5b3764a" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/18f332e4-de63-4fa9-9a56-e352d5b3764a/console_2.sql" value="18f332e4-de63-4fa9-9a56-e352d5b3764a" />
     <file url="file://$PROJECT_DIR$/src/main/java/pl/cnc/manager/repository/JdbcToolIssueRepository.java" value="18f332e4-de63-4fa9-9a56-e352d5b3764a" />
     <file url="file://$PROJECT_DIR$/src/main/java/pl/cnc/manager/repository/JdbcToolRepository.java" value="18f332e4-de63-4fa9-9a56-e352d5b3764a" />
   </component>
