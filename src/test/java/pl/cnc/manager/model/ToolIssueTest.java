@@ -65,4 +65,15 @@ class ToolIssueTest {
                 () -> new ToolIssue("1", "D1", "Drill 8 mm", ToolType.DRILL, 3, OperationType.PICKUP, null));
     }
 
+    @Test
+    @DisplayName("toString() should format issue with readable date and action")
+    void shouldFormatToStringCorrectly() {
+        LocalDateTime issuedAt = LocalDateTime.of(2026, 7, 23, 14, 32);
+        ToolIssue issue = new ToolIssue("1", "D1", "Drill 8mm", ToolType.DRILL,
+                2, OperationType.PICKUP, issuedAt);
+
+        String result = issue.toString();
+
+        assertEquals("[23-07-2026 14:32] issued: 2 x Drill 8mm (DRILL, id: D1)", result);
+    }
 }

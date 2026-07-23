@@ -77,7 +77,7 @@ class EndMillTest {
     }
 
     @Test
-    @DisplayName("Should print correct string")
+    @DisplayName("Should return correct string")
     void shouldReturnCorrectToString() {
         EndMill mill = new EndMill("E001", "Carbide End Mill", 12.0, 4, 10);
 
