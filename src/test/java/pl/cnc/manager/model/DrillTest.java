@@ -1,5 +1,6 @@
 package pl.cnc.manager.model;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DrillTest {
 
     @Test
+    @DisplayName("Should correctly create Drill object")
     void shouldCreateDrillCorrectly() {
         Drill drill = new Drill("D-01", "HSS Drill", 10.5, 5);
 
@@ -18,6 +20,7 @@ class DrillTest {
     }
 
     @Test
+    @DisplayName("Should throw IllegalArgumentException when id is blank")
     void shouldThrowExceptionWhenIdIsBlank() {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
@@ -28,6 +31,7 @@ class DrillTest {
     }
 
     @Test
+    @DisplayName("Should throw IllegalArgumentException when name is blank")
     void shouldThrowExceptionWhenNameIsBlank() {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
@@ -38,6 +42,7 @@ class DrillTest {
     }
 
     @Test
+    @DisplayName("Should throw IllegalArgumentException when quantity is negative")
     void shouldThrowExceptionWhenQuantityIsNegative() {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
@@ -48,6 +53,7 @@ class DrillTest {
     }
 
     @Test
+    @DisplayName("Should throw IllegalArgumentException when diameter is zero")
     void shouldThrowExceptionWhenDiameterIsZero() {
         IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
@@ -59,6 +65,7 @@ class DrillTest {
     }
 
     @Test
+    @DisplayName("Should throw IllegalArgumentException when diameter is negative")
     void shouldThrowExceptionWhenDiameterIsNegative() {
         assertThrows(
                 IllegalArgumentException.class,
@@ -67,6 +74,7 @@ class DrillTest {
     }
 
     @Test
+    @DisplayName("Should set quantity properly")
     void shouldSetQuantity() {
         Drill drill = new Drill("D001", "Drill", 8.0, 2);
 
@@ -76,6 +84,7 @@ class DrillTest {
     }
 
     @Test
+    @DisplayName("Should throw IllegalArgumentException when is setting negative quantity")
     void shouldThrowExceptionWhenSettingNegativeQuantity() {
         Drill drill = new Drill("D1", "Drill", 9.0, 2);
 
@@ -88,6 +97,7 @@ class DrillTest {
     }
 
     @Test
+    @DisplayName("Should print correct string")
     void shouldReturnCorrectToString() {
         Drill drill = new Drill("D001", "HSS Drill", 10.5, 5);
 
