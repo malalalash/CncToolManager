@@ -27,7 +27,7 @@ class DrillTest {
                 () -> new Drill("  ", "drill", 10.0, 10)
         );
 
-        assertEquals("ID cannot be empty.", exception.getMessage());
+        assertEquals("Tool ID cannot be empty.", exception.getMessage());
     }
 
     @Test

@@ -2,11 +2,11 @@ package pl.cnc.manager;
 
 import pl.cnc.manager.repository.JdbcToolRepository;
 import pl.cnc.manager.repository.ToolRepository;
-import pl.cnc.manager.repository.ToolRepositoryException;
 import pl.cnc.manager.service.DatabaseConnectionService;
 import pl.cnc.manager.service.ToolMagazineService;
 import pl.cnc.manager.ui.CncConsoleUi;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -14,11 +14,16 @@ import java.util.Scanner;
 public class MainApp {
     public static void main(String[] args) {
         System.out.println("Welcome to CNC Tool Manager");
-        DatabaseConnectionService dbService = new DatabaseConnectionService(
-                System.getenv("DB_URL"),
-                System.getenv("DB_USER"),
-                System.getenv("DB_PASSWORD")
-        );
+        String url = System.getenv("DB_URL");
+        String user = System.getenv("DB_USER");
+        String password = System.getenv("DB_PASSWORD");
+
+        if (url.isBlank() || user.isBlank() || password.isBlank()) {
+            System.out.println("Database configuration is missing.");
+            return;
+        }
+
+        DatabaseConnectionService dbService = new DatabaseConnectionService(url, user, password);
 
         try (Connection conn = dbService.connect()) {
             if (conn != null && !conn.isClosed()) {

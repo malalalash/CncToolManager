@@ -143,10 +143,10 @@ public class JdbcToolRepository implements ToolRepository {
 
     private boolean changeQuantity(String id, int amount, OperationType operationType) {
         if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("ID cannot be empty");
+            throw new IllegalArgumentException("Tool ID cannot be empty.");
         }
         if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be positive");
+            throw new IllegalArgumentException("Amount must be positive.");
         }
 
         int delta = operationType == OperationType.PICKUP ? -amount : amount;

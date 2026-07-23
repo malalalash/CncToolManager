@@ -65,11 +65,12 @@ class ToolMagazineServiceTest {
         @Test
         @DisplayName("Should throw IllegalArgumentException when tool ID is blank")
         void shouldThrowExceptionWhenIdIsBlank() {
-            Tool invalidTool = new Drill("  ", "Drill 10mm", 10.0, 5);
+            Tool mockTool = mock(Drill.class);
+            when(mockTool.getId()).thenReturn(" ");
 
             IllegalArgumentException exception = assertThrows(
                     IllegalArgumentException.class,
-                    () -> service.addTool(invalidTool)
+                    () -> service.addTool(mockTool)
             );
 
             assertEquals("Tool ID cannot be empty.", exception.getMessage());
