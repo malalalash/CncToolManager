@@ -44,9 +44,8 @@ public class JdbcToolIssueRepository implements ToolIssueRepository{
 
                 history.add(new ToolIssue(id, toolId, name, toolType, amount, operationType, issuedAt));
             }
-
         } catch (SQLException e) {
-            throw new ToolRepositoryException("Failed to get values: ", e);
+            throw new ToolRepositoryException("Failed to get values", e);
         }
         return history;
     }

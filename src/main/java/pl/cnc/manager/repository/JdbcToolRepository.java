@@ -39,7 +39,7 @@ public class JdbcToolRepository implements ToolRepository {
                 tools.add(tool);
             }
         } catch (SQLException e) {
-            throw new ToolRepositoryException("Failed to fetch tools: ", e);
+            throw new ToolRepositoryException("Failed to fetch tools", e);
         }
         return tools;
     }
@@ -55,7 +55,7 @@ public class JdbcToolRepository implements ToolRepository {
                 return rs.next();
             }
         } catch (SQLException e) {
-            throw new ToolRepositoryException("Error checking for tool: ", e);
+            throw new ToolRepositoryException("Error checking for tool", e);
         }
     }
 
@@ -101,7 +101,7 @@ public class JdbcToolRepository implements ToolRepository {
             }
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            throw new ToolRepositoryException("Cannot save tool: ", e);
+            throw new ToolRepositoryException("Cannot save tool", e);
         }
     }
 
@@ -114,7 +114,7 @@ public class JdbcToolRepository implements ToolRepository {
             pstmt.setString(1, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new ToolRepositoryException("Cannot delete tool: ", e);
+            throw new ToolRepositoryException("Cannot delete tool", e);
         }
     }
 
