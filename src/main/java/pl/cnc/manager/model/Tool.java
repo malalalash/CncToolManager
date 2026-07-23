@@ -80,6 +80,10 @@ public sealed abstract class Tool implements Comparable<Tool> permits Drill, End
         if (other == null) {
             throw new NullPointerException("Cannot compare to null");
         }
+        if (this.id.equals(other.id)) {
+            return 0;
+        }
+
         int result = Double.compare(this.diameter, other.diameter);
         if (result != 0) {
             return result;
