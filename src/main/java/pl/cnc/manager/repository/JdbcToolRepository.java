@@ -101,6 +101,9 @@ public class JdbcToolRepository implements ToolRepository {
             }
             pstmt.executeUpdate();
         } catch (SQLException e) {
+            if ("23505".equals(e.getSQLState())){
+                throw new DuplicateToolException("Tool with ID '" + tool.getId() + "' already exists!", e);
+            }
             throw new ToolRepositoryException("Cannot save tool", e);
         }
     }

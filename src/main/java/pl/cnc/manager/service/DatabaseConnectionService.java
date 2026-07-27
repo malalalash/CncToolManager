@@ -14,7 +14,6 @@ public class DatabaseConnectionService {
         config.setJdbcUrl(url);
         config.setUsername(user);
         config.setPassword(password);
-        config.setMaximumPoolSize(5);
         this.dataSource = new HikariDataSource(config);
     }
     public Connection connect() throws SQLException {

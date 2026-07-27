@@ -1,6 +1,7 @@
 package pl.cnc.manager.ui;
 
 import pl.cnc.manager.model.*;
+import pl.cnc.manager.repository.DuplicateToolException;
 import pl.cnc.manager.repository.ToolRepositoryException;
 import pl.cnc.manager.service.ToolIssueService;
 import pl.cnc.manager.service.ToolMagazineService;
@@ -204,7 +205,7 @@ public class CncConsoleUi {
             action.run();
         } catch (NumberFormatException e) {
             System.out.println("Invalid number entered. " + actionLabel + " aborted.");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | DuplicateToolException e) {
             System.out.println("Validation error: " + e.getMessage());
         } catch (ToolRepositoryException e) {
             System.err.println("Database error, Try again!");
