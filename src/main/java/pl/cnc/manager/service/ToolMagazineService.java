@@ -1,11 +1,14 @@
 package pl.cnc.manager.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.cnc.manager.model.*;
 import pl.cnc.manager.repository.ToolRepository;
 
 import java.util.List;
 
 public class ToolMagazineService {
+    private static final Logger log = LoggerFactory.getLogger(ToolMagazineService.class);
 
     private final ToolRepository repository;
 
@@ -25,13 +28,20 @@ public class ToolMagazineService {
         }
 
         repository.save(tool);
+        log.info("Tool added: id={}, type={}, quantity={}", tool.getId(), tool.getType(), tool.getQuantity());
     }
 
     public boolean removeTool(String id) {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("Tool ID cannot be empty.");
         }
-        return repository.deleteById(id);
+        boolean removed = repository.deleteById(id);
+        if (removed) {
+            log.info("Tool removed: id={}", id);
+        } else {
+            log.debug("Tool removal skipped, no such id: {}", id);
+        }
+        return removed;
     }
 
     public List<Tool> getAllTools() {
@@ -45,7 +55,13 @@ public class ToolMagazineService {
         if (quantity < 0) {
             throw new IllegalArgumentException("Quantity cannot be negative.");
         }
-        return repository.updateQuantity(id, quantity);
+        boolean updated = repository.updateQuantity(id, quantity);
+        if (updated) {
+            log.info("Tool quantity updated: id={}, newQuantity={}", id, quantity);
+        } else {
+            log.debug("Quantity update skipped, no such id: {}", id);
+        }
+        return updated;
     }
 
     public boolean issueReturnTool(String id, int amount, OperationType type) {
@@ -55,6 +71,12 @@ public class ToolMagazineService {
         if (amount <= 0) {
             throw new IllegalArgumentException("Amount must be positive.");
         }
-        return type == OperationType.PICKUP ? repository.issueTool(id, amount) : repository.returnTool(id, amount);
+        boolean success = type == OperationType.PICKUP ? repository.issueTool(id, amount) : repository.returnTool(id, amount);
+        if (success) {
+            log.info("Tool: {}: id={}, amount={}", type == OperationType.PICKUP ? "issued" : "returned", id, amount);
+        } else {
+            log.debug("{} skipped, no such id of insufficient quantity: {}", type, id);
+        }
+        return success;
     }
 }
