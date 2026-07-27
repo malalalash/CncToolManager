@@ -6,6 +6,7 @@ import pl.cnc.manager.service.DatabaseConnectionService;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class JdbcToolRepository implements ToolRepository {
     private final DatabaseConnectionService dbService;
@@ -109,14 +110,16 @@ public class JdbcToolRepository implements ToolRepository {
     }
 
     @Override
-    public boolean deleteById(String id) {
+    public boolean deleteById(String id) throws ToolRepositoryException {
         String sql = "DELETE FROM tools WHERE id = ?";
         try (Connection conn = dbService.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            if ("23503".equals(e.getSQLState())) {
+            String sqlState = e.getSQLState();
+            String message = Objects.toString(e.getMessage(), "");
+            if ("23503".equals(sqlState) || message.contains("fk_tool_id") || message.contains("violates RESTRICT")) {
                 throw new ToolInUseException("Tool with ID: '" + id + "' has issue history and cannot be deleted.", e);
             }
             throw new ToolRepositoryException("Cannot delete tool", e);

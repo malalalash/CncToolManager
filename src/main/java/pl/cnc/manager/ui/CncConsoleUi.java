@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.cnc.manager.model.*;
 import pl.cnc.manager.repository.DuplicateToolException;
+import pl.cnc.manager.repository.ToolInUseException;
 import pl.cnc.manager.repository.ToolRepositoryException;
 import pl.cnc.manager.service.ToolIssueService;
 import pl.cnc.manager.service.ToolMagazineService;
@@ -209,7 +210,7 @@ public class CncConsoleUi {
         } catch (NumberFormatException e) {
             log.debug("Invalid number entered during '{}': {}", actionLabel, e.getMessage());
             System.out.println("Invalid number entered. " + actionLabel + " aborted.");
-        } catch (IllegalArgumentException | DuplicateToolException e) {
+        } catch (IllegalArgumentException | DuplicateToolException | ToolInUseException e) {
             log.debug("Validation error during '{}': {}", actionLabel, e.getMessage());
             System.out.println("Validation error: " + e.getMessage());
         } catch (ToolRepositoryException e) {
