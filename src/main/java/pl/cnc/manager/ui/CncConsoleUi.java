@@ -1,5 +1,7 @@
 package pl.cnc.manager.ui;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.cnc.manager.model.*;
 import pl.cnc.manager.repository.DuplicateToolException;
 import pl.cnc.manager.repository.ToolRepositoryException;
@@ -13,6 +15,7 @@ import static pl.cnc.manager.model.OperationType.PICKUP;
 import static pl.cnc.manager.model.OperationType.RETURN;
 
 public class CncConsoleUi {
+    private static final Logger log = LoggerFactory.getLogger(CncConsoleUi.class);
 
     private final ToolMagazineService toolService;
     private final ToolIssueService toolIssueService;
@@ -204,10 +207,13 @@ public class CncConsoleUi {
         try {
             action.run();
         } catch (NumberFormatException e) {
+            log.debug("Invalid number entered during '{}': {}", actionLabel, e.getMessage());
             System.out.println("Invalid number entered. " + actionLabel + " aborted.");
         } catch (IllegalArgumentException | DuplicateToolException e) {
+            log.debug("Validation error during '{}': {}", actionLabel, e.getMessage());
             System.out.println("Validation error: " + e.getMessage());
         } catch (ToolRepositoryException e) {
+            log.error("Database operation failed during '{}'", actionLabel, e);
             System.err.println("Database error, Try again!");
         }
     }
