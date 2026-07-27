@@ -1,0 +1,5 @@
+2026-07-27 14:16:37.538 [main] INFO  p.c.m.s.DatabaseConnectionService - Connection pool initialized (maxPoolSize=10)
+2026-07-27 14:16:43.431 [main] INFO  p.c.m.s.DatabaseConnectionService - Connection pool closed.
+2026-07-27 14:22:05.122 [main] INFO  p.c.m.s.DatabaseConnectionService - Connection pool initialized (maxPoolSize=10)
+2026-07-27 14:22:05.129 [main] INFO  pl.cnc.manager.MainApp - Application started, dadabase connection acquired.
+2026-07-27 14:22:07.351 [main] INFO  p.c.m.s.DatabaseConnectionService - Connection pool closed.
