@@ -101,7 +101,7 @@ public class JdbcToolRepository implements ToolRepository {
             }
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            if ("23505".equals(e.getSQLState())){
+            if ("23505".equals(e.getSQLState())) {
                 throw new DuplicateToolException("Tool with ID '" + tool.getId() + "' already exists!", e);
             }
             throw new ToolRepositoryException("Cannot save tool", e);
@@ -116,6 +116,9 @@ public class JdbcToolRepository implements ToolRepository {
             pstmt.setString(1, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            if ("23503".equals(e.getSQLState())) {
+                throw new ToolInUseException("Tool with ID: '" + id + "' has issue history and cannot be deleted.", e);
+            }
             throw new ToolRepositoryException("Cannot delete tool", e);
         }
     }
@@ -133,6 +136,7 @@ public class JdbcToolRepository implements ToolRepository {
             throw new ToolRepositoryException("Cannot update quantity for tool (id=" + id + "): ", e);
         }
     }
+
     @Override
     public boolean issueTool(String id, int amount) {
         return changeQuantity(id, amount, OperationType.PICKUP);
