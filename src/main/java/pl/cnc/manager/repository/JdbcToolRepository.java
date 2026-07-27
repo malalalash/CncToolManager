@@ -2,6 +2,7 @@ package pl.cnc.manager.repository;
 
 import pl.cnc.manager.model.*;
 import pl.cnc.manager.service.DatabaseConnectionService;
+import pl.cnc.manager.util.Validation;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -151,12 +152,8 @@ public class JdbcToolRepository implements ToolRepository {
     }
 
     private boolean changeQuantity(String id, int amount, OperationType operationType) {
-        if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("Tool ID cannot be empty.");
-        }
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be positive.");
-        }
+        Validation.requireNonBlank(id, "Tool ID cannot be empty.");
+        Validation.requirePositive(amount, "Amount must be positive.");
 
         int delta = operationType == OperationType.PICKUP ? -amount : amount;
 

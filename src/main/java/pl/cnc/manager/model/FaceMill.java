@@ -1,5 +1,7 @@
 package pl.cnc.manager.model;
 
+import pl.cnc.manager.util.Validation;
+
 import java.util.Locale;
 
 public final class FaceMill extends Tool {
@@ -7,9 +9,7 @@ public final class FaceMill extends Tool {
 
     public FaceMill(String id, String name, double diameter, int inserts, int quantity) {
         super(ToolType.FACE_MILL, id, name, diameter, quantity);
-        if (inserts <= 0) {
-            throw new IllegalArgumentException("Inserts must be greater than 0.");
-        }
+        Validation.requirePositive(inserts, "Inserts must be greater than 0.");
         this.inserts = inserts;
     }
 

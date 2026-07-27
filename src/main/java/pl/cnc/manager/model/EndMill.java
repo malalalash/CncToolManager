@@ -1,5 +1,7 @@
 package pl.cnc.manager.model;
 
+import pl.cnc.manager.util.Validation;
+
 import java.util.Locale;
 
 public final class EndMill extends Tool {
@@ -7,9 +9,7 @@ public final class EndMill extends Tool {
 
     public EndMill(String id, String name, double diameter, int flutes, int quantity) {
         super(ToolType.END_MILL, id, name, diameter, quantity);
-        if (flutes <= 0) {
-            throw new IllegalArgumentException("Flutes must be greater than 0.");
-        }
+        Validation.requirePositive(flutes, "Flutes must be greater than 0.");
         this.flutes = flutes;
     }
 

@@ -1,5 +1,7 @@
 package pl.cnc.manager.model;
 
+import pl.cnc.manager.util.Validation;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -14,24 +16,12 @@ public record ToolIssue(
         LocalDateTime issuedAt
 ) {
     public ToolIssue {
-        if (toolId == null || toolId.isBlank()) {
-            throw new IllegalArgumentException("Tool ID cannot be empty.");
-        }
-        if (toolName == null || toolName.isBlank()) {
-            throw new IllegalArgumentException("Tool name cannot be empty.");
-        }
-        if (toolType == null) {
-            throw new IllegalArgumentException("Tool type cannot be null.");
-        }
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be positive");
-        }
-        if (operationType == null) {
-            throw new IllegalArgumentException("Operation type cannot be null.");
-        }
-        if (issuedAt == null) {
-            throw new IllegalArgumentException("Issued date cannot be null.");
-        }
+        Validation.requireNonBlank(toolId, "Tool ID cannot be empty.");
+        Validation.requireNonBlank(toolName, "Tool name cannot be empty.");
+        Validation.requireNonNull(toolType, "Tool type cannot be null.");
+        Validation.requirePositive(amount, "Amount must be positive");
+        Validation.requireNonNull(operationType, "Operation type cannot be null.");
+        Validation.requireNonNull(issuedAt, "Issued date cannot be null.");
     }
 
     @Override

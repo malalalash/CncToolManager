@@ -1,5 +1,7 @@
 package pl.cnc.manager.model;
 
+import pl.cnc.manager.util.Validation;
+
 import java.util.Locale;
 import java.util.Objects;
 
@@ -11,18 +13,10 @@ public sealed abstract class Tool implements Comparable<Tool> permits Drill, End
     private final double diameter;
 
     public Tool(ToolType type, String id, String name, double diameter, int quantity) {
-        if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("Tool ID cannot be empty.");
-        }
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be empty.");
-        }
-        if (diameter <= 0) {
-            throw new IllegalArgumentException("Diameter must be greater than 0");
-        }
-        if (quantity < 0) {
-            throw new IllegalArgumentException("Quantity cannot be negative");
-        }
+        Validation.requireNonBlank(id, "Tool ID cannot be empty.");
+        Validation.requireNonBlank(name, "Name cannot be empty.");
+        Validation.requirePositive(diameter, "Diameter must be greater than 0");
+        Validation.requireNonNegative(quantity, "Quantity cannot be negative");
 
         this.type = type;
         this.id = id;
@@ -54,9 +48,7 @@ public sealed abstract class Tool implements Comparable<Tool> permits Drill, End
     }
 
     public void setQuantity(int quantity) {
-        if (quantity < 0) {
-            throw new IllegalArgumentException("Quantity cannot be negative");
-        }
+        Validation.requireNonNegative(quantity, "Quantity cannot be negative");
         this.quantity = quantity;
     }
 

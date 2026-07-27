@@ -1,5 +1,7 @@
 package pl.cnc.manager.model;
 
+import pl.cnc.manager.util.Validation;
+
 import java.util.Locale;
 
 public final class Tap extends Tool {
@@ -7,9 +9,7 @@ public final class Tap extends Tool {
 
     public Tap(String id, String name, double diameter, double pitch, int quantity) {
         super(ToolType.TAP, id, name, diameter, quantity);
-        if (pitch <= 0) {
-            throw new IllegalArgumentException("Pitch must be greater than 0");
-        }
+        Validation.requirePositive(pitch, "Pitch must be greater than 0");
         this.pitch = pitch;
     }
 

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.cnc.manager.model.*;
 import pl.cnc.manager.repository.ToolRepository;
+import pl.cnc.manager.util.Validation;
 
 import java.util.List;
 
@@ -17,12 +18,8 @@ public class ToolMagazineService {
     }
 
     public void addTool(Tool tool) {
-        if (tool == null) {
-            throw new IllegalArgumentException("Tool details cannot be null.");
-        }
-        if (tool.getId() == null || tool.getId().isBlank()) {
-            throw new IllegalArgumentException("Tool ID cannot be empty.");
-        }
+        Validation.requireNonNull(tool, "Tool details cannot be null.");
+        Validation.requireNonBlank(tool.getId(), "Tool ID cannot be empty.");
         if (repository.existsById(tool.getId())) {
             throw new IllegalArgumentException("Tool with ID '" + tool.getId() + "' already exists!");
         }
@@ -32,9 +29,7 @@ public class ToolMagazineService {
     }
 
     public boolean removeTool(String id) {
-        if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("Tool ID cannot be empty.");
-        }
+        Validation.requireNonBlank(id, "Tool ID cannot be empty.");
         boolean removed = repository.deleteById(id);
         if (removed) {
             log.info("Tool removed: id={}", id);
@@ -49,12 +44,8 @@ public class ToolMagazineService {
     }
 
     public boolean updateQuantity(String id, int quantity) {
-        if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("Tool ID cannot be empty.");
-        }
-        if (quantity < 0) {
-            throw new IllegalArgumentException("Quantity cannot be negative.");
-        }
+        Validation.requireNonBlank(id, "Tool ID cannot be empty.");
+        Validation.requireNonNegative(quantity, "Quantity cannot be negative.");
         boolean updated = repository.updateQuantity(id, quantity);
         if (updated) {
             log.info("Tool quantity updated: id={}, newQuantity={}", id, quantity);
@@ -65,12 +56,8 @@ public class ToolMagazineService {
     }
 
     public boolean issueReturnTool(String id, int amount, OperationType type) {
-        if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("Tool ID cannot be empty.");
-        }
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount must be positive.");
-        }
+        Validation.requireNonBlank(id, "Tool ID cannot be empty.");
+        Validation.requirePositive(amount, "Amount must be positive.");
         boolean success = type == OperationType.PICKUP ? repository.issueTool(id, amount) : repository.returnTool(id, amount);
         if (success) {
             log.info("Tool: {}: id={}, amount={}", type == OperationType.PICKUP ? "issued" : "returned", id, amount);
