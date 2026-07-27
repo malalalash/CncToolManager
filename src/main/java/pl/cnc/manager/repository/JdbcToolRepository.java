@@ -113,7 +113,6 @@ public class JdbcToolRepository implements ToolRepository {
         String sql = "DELETE FROM tools WHERE id = ?";
         try (Connection conn = dbService.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
             pstmt.setString(1, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
